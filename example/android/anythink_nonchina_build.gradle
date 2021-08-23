@@ -1,0 +1,58 @@
+allprojects {
+    repositories {
+        //Anythink(Core)
+        maven {
+            url "https://anythink.jfrog.io/artifactory/android_sdk"
+        }
+
+        //Mintegral
+        maven {
+            url "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea"
+        }
+//
+//        //Chartboost
+//        maven {
+//            url "https://chartboostmobile.bintray.com/Chartboost"
+//        }
+//
+//        //Tapjoy
+        maven {
+            url "https://sdk.tapjoy.com/"
+        }
+//
+        //Ironsource
+        maven {
+            url "https://android-sdk.is.com/"
+        }
+//
+        //AdColony       卡
+//        maven {
+//            url "https://adcolony.bintray.com/AdColony"
+//        }
+////
+//        //Nend
+        maven {
+            url "http://fan-adn.github.io/nendSDK-Android-lib/library"
+        }
+//
+//        //Maio
+        maven {
+            url "https://imobile-maio.github.io/maven"
+        }
+//
+//        //Fyber   卡
+//        maven {
+//            url "https://fyber.bintray.com/marketplace"
+//        }
+//
+//        //Ogury
+        maven {
+            url "https://maven.ogury.co"
+        }
+//
+//        //Huawei
+        maven {
+            url "https://developer.huawei.com/repo/"
+        }
+    }
+}
