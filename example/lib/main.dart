@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   _setSDK() {
     InitManger.setLogEnabled();
     InitManger.setExludeBundleIDArray();
-    InitManger.deniedUploadDeviceInfo();
+    // InitManger.deniedUploadDeviceInfo();
     InitManger.initTopon();
 
     InitManger.setChannelStr();
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
     ListenerManager.interListen();
     ListenerManager.bannerListen();
     ListenerManager.nativeListen();
-    ListenerManager.downLoadListen();
+    // ListenerManager.downLoadListen();
   }
 
   @override

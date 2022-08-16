@@ -2,8 +2,6 @@ package com.anythink.flutter.banner;
 
 import android.content.Context;
 
-import com.anythink.flutter.banner.ATAndroidBannerView;
-
 import java.util.Map;
 
 import io.flutter.plugin.common.BinaryMessenger;

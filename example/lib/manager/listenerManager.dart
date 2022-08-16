@@ -43,6 +43,22 @@ class ListenerTool {
         case RewardedStatus.rewardedVideoUnknown:
           print("flutter rewardedVideoUnknown");
           break;
+
+        case RewardedStatus.rewardedVideoDidAgainStartPlaying:
+          print("flutter rewardedVideoDidAgainStartPlaying ---- placementID: ${value.placementID} ---- extra:${value.extraMap}");
+          break;
+        case RewardedStatus.rewardedVideoDidAgainEndPlaying:
+          print("flutter rewardedVideoDidAgainEndPlaying ---- placementID: ${value.placementID} ---- extra:${value.extraMap}");
+          break;
+        case RewardedStatus.rewardedVideoDidAgainFailToPlay:
+          print("flutter rewardedVideoDidAgainFailToPlay ---- placementID: ${value.placementID} ---- extra:${value.extraMap}");
+          break;
+        case RewardedStatus.rewardedVideoDidAgainRewardSuccess:
+          print("flutter rewardedVideoDidAgainRewardSuccess ---- placementID: ${value.placementID} ---- extra:${value.extraMap}");
+          break;
+        case RewardedStatus.rewardedVideoDidAgainClick:
+          print("flutter rewardedVideoDidAgainClick ---- placementID: ${value.placementID} ---- extra:${value.extraMap}");
+          break;
       }
     });
   }

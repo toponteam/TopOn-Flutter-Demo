@@ -12,6 +12,13 @@ enum RewardedStatus {
   rewardedVideoDidClick,
   rewardedVideoDidClose,
   rewardedVideoDidDeepLink,
+
+  rewardedVideoDidAgainStartPlaying,
+  rewardedVideoDidAgainEndPlaying,
+  rewardedVideoDidAgainFailToPlay,
+  rewardedVideoDidAgainRewardSuccess,
+  rewardedVideoDidAgainClick,
+
   rewardedVideoUnknown
 }
 
@@ -70,6 +77,22 @@ class ATRewardResponse extends BaseResponse {
    }
    else if(adStatus == 'rewardedVideoDidDeepLink'){
      tempRewardStatus = RewardedStatus.rewardedVideoDidDeepLink;
+   }
+
+   else if(adStatus == 'rewardedVideoDidAgainStartPlaying'){
+     tempRewardStatus = RewardedStatus.rewardedVideoDidAgainStartPlaying;
+   }
+   else if(adStatus == 'rewardedVideoDidAgainEndPlaying'){
+     tempRewardStatus = RewardedStatus.rewardedVideoDidAgainEndPlaying;
+   }
+   else if(adStatus == 'rewardedVideoDidAgainFailToPlay'){
+     tempRewardStatus = RewardedStatus.rewardedVideoDidAgainFailToPlay;
+   }
+   else if(adStatus == 'rewardedVideoDidAgainClick'){
+     tempRewardStatus = RewardedStatus.rewardedVideoDidAgainClick;
+   }
+   else if(adStatus == 'rewardedVideoDidAgainRewardSuccess'){
+     tempRewardStatus = RewardedStatus.rewardedVideoDidAgainRewardSuccess;
    }
 
    else{

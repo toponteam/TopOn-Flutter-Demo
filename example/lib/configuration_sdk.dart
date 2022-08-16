@@ -7,7 +7,7 @@ class Configuration {
       ? '7eae0567827cfe2b22874061763f30c9'
       : '4f7b9ac17decb9babec83aac078742c7';
 
-  static String rewarderPlacementID = Platform.isIOS ? 'b5b44a0f115321' : 'b5b449fb3d89d7';
+  static String rewarderPlacementID = Platform.isIOS ? 'b5b72b21184aa8' : 'b5b449fb3d89d7';
   static String interstitialPlacementID = Platform.isIOS ? 'b5bacad26a752a' : 'b5baca53984692';
   static String bannerPlacementID = Platform.isIOS ? 'b5bacaccb61c29' : 'b5baca4f74c3d8';
   static String nativePlacementID = Platform.isIOS ? 'b5b0f5663c6e4a' : 'b5aa1fa2cae775';

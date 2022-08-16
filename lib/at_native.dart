@@ -60,7 +60,7 @@ class ATNative {
       String backgroundColorStr = '#FFFFFF',
       String textColorStr = '#000000',
       double textSize = 15,
-      bool isCustomClick = true}) {
+      bool isCustomClick = false}) {
     return {
       'x': x,
       'y': y,
@@ -99,4 +99,43 @@ class ATNative {
       "placementID": placementID,
     });
   }
+
+  /*show ad*/
+  Future<String> showNativeAd({
+    required String placementID,
+    required Map extraMap,
+    bool isAdaptiveHeight=false
+  }) async {
+    return await AnythinkSdk.channel.invokeMethod("showNativeAd", {
+      "placementID": placementID,
+      "extraDic": extraMap,
+      "isAdaptiveHeight":isAdaptiveHeight
+    });
+  }
+
+  /*show ad with scene*/
+  Future<String> showSceneNativeAd({
+    required String placementID,
+    required String sceneID,
+    required Map extraMap,
+    bool isAdaptiveHeight=false
+  }) async {
+    return await AnythinkSdk.channel.invokeMethod("showSceneNativeAd", {
+      "placementID": placementID,
+      "sceneID": sceneID,
+      "extraDic": extraMap,
+      "isAdaptiveHeight":isAdaptiveHeight
+    });
+  }
+
+  Future<bool> removeNativeAd({
+    required String placementID,
+  }) async {
+    return await AnythinkSdk.channel.invokeMethod("removeNativeAd", {
+      "placementID": placementID,
+    });
+  }
+
+
+
 }

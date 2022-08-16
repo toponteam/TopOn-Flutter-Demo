@@ -64,6 +64,48 @@ public class ATAdBannerManger implements HandleAnyThinkMethod {
                     result.success("");
                 }
                 break;
+            case "showBannerInRectangle":
+                if (helper != null) {
+                    helper.showBannerWithRect(setting, null);
+                }
+                break;
+            case "showSceneBannerInRectangle":
+                if (helper != null) {
+                    String scenario = methodCall.argument(Const.SCENE_ID);
+
+                    helper.showBannerWithRect(setting, scenario);
+                }
+                break;
+            case "showAdInPosition":
+                if (helper != null) {
+                    String position = methodCall.argument(Const.POSITION);
+
+                    helper.showBannerWithPosition(position, null);
+                }
+                break;
+            case "showSceneBannerAdInPosition":
+                if (helper != null) {
+                    String position = methodCall.argument(Const.POSITION);
+                    String scenario = methodCall.argument(Const.SCENE_ID);
+
+                    helper.showBannerWithPosition(position, scenario);
+                }
+                break;
+            case "removeBannerAd":
+                if (helper != null) {
+                    helper.removeBanner();
+                }
+                break;
+            case "hideBannerAd":
+                if (helper != null) {
+                    helper.hideBanner();
+                }
+                break;
+            case "afreshShowBannerAd":
+                if (helper != null) {
+                    helper.reshowBanner();
+                }
+                break;
         }
         return true;
     }

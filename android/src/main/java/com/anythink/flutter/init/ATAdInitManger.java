@@ -11,8 +11,6 @@ import com.anythink.flutter.utils.Const;
 import com.anythink.flutter.utils.FlutterPluginUtil;
 import com.anythink.flutter.utils.MsgTools;
 
-import org.json.JSONObject;
-
 import java.util.List;
 import java.util.Map;
 
@@ -40,51 +38,52 @@ public class ATAdInitManger implements HandleAnyThinkMethod {
                 String appID = methodCall.argument(Const.Init.APP_ID_STR);
                 String appKey = methodCall.argument(Const.Init.APP_KEY_STR);
 
-                MsgTools.pirntMsg("initSDK: " + appID + ", " + appKey);
+                MsgTools.printMsg("initSDK: " + appID + ", " + appKey);
                 ATSDK.init(FlutterPluginUtil.getApplicationContext(), appID, appKey);
                 break;
             case "setLogEnabled":
                 Boolean logEnable = methodCall.argument(Const.Init.LOG_ENABLE);
 
                 MsgTools.setLogDebug(logEnable);
-                MsgTools.pirntMsg("setLogEnabled: " + logEnable);
+                MsgTools.printMsg("setLogEnabled: " + logEnable);
                 ATSDK.setNetworkLogDebug(logEnable);
                 break;
             case "setChannelStr":
                 String channelStr = methodCall.argument(Const.Init.CHANNEL_STR);
 
-                MsgTools.pirntMsg("setChannelStr: " + channelStr);
+                MsgTools.printMsg("setChannelStr: " + channelStr);
                 ATSDK.setChannel(channelStr);
                 break;
             case "setSubchannelStr":
                 String subchannelStr = methodCall.argument(Const.Init.SUB_CHANNEL_STR);
 
-                MsgTools.pirntMsg("setSubchannelStr: " + subchannelStr);
+                MsgTools.printMsg("setSubchannelStr: " + subchannelStr);
                 ATSDK.setSubChannel(subchannelStr);
                 break;
             case "setCustomDataDic":
                 Map<String, Object> argument = methodCall.argument(Const.Init.CUSTOM_DATA_DIC);
                 if (argument != null) {
-                    MsgTools.pirntMsg("setCustomDataDic: " + argument);
+                    MsgTools.printMsg("setCustomDataDic: " + argument);
                     ATSDK.initCustomMap(argument);
                 }
                 break;
             case "setExludeBundleIDArray":
-                MsgTools.pirntMsg("setExludeBundleIDArray");
+                MsgTools.printMsg("setExludeBundleIDArray");
                 List<String> bundleIdList = methodCall.argument(Const.Init.EXLUDE_BUNDLE_ID_ARRAY);
 
                 if (bundleIdList != null) {
 
                     int size = bundleIdList.size();
                     for (int i = 0; i < size; i++) {
-                        MsgTools.pirntMsg("setExludeBundleIDArray: " + bundleIdList.get(i));
+                        MsgTools.printMsg("setExludeBundleIDArray: " + bundleIdList.get(i));
                     }
 
-                    ATSDK.setExcludeMyOfferPkgList(bundleIdList);
+//                    ATSDK.setExcludeMyOfferPkgList(bundleIdList);
+                    ATSDK.setExcludePackageList(bundleIdList);
                 }
                 break;
             case "deniedUploadDeviceInfo":
-                MsgTools.pirntMsg("deniedUploadDeviceInfo");
+                MsgTools.printMsg("deniedUploadDeviceInfo");
                 List<String> deniedUploadDeviceInfoList = methodCall.argument(Const.Init.DENIED_UPLOAD_INFO_ARRAY);
 
                 if (deniedUploadDeviceInfoList != null) {
@@ -96,24 +95,33 @@ public class ATAdInitManger implements HandleAnyThinkMethod {
                         for (int i = 0; i < size; i++) {
                             info = deniedUploadDeviceInfoList.get(i);
                             deniedArray[i] = info;
-                            MsgTools.pirntMsg("deniedUploadDeviceInfo: " + info);
+                            MsgTools.printMsg("deniedUploadDeviceInfo: " + info);
                         }
 
                         ATSDK.deniedUploadDeviceInfo(deniedArray);
+                        break;
                     }
                 }
+
+                try {
+                    MsgTools.printMsg("deniedUploadDeviceInfo: empty string");
+                    ATSDK.deniedUploadDeviceInfo("");
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+
                 break;
             case "setPlacementCustomData":
                 String placementIDStr = methodCall.argument(Const.Init.PLACEMENT_ID_STR);
                 Map<String, Object> placementCustomDataMap = methodCall.argument(Const.Init.PLACEMENT_CUSTOM_DATA_DIC);
 
-                MsgTools.pirntMsg("setPlacementCustomData: " + placementIDStr + ", " + placementCustomDataMap);
+                MsgTools.printMsg("setPlacementCustomData: " + placementIDStr + ", " + placementCustomDataMap);
                 ATSDK.initPlacementCustomMap(placementIDStr, placementCustomDataMap);
                 break;
             case "getGDPRLevel":
                 int gdprDataLevel = ATSDK.getGDPRDataLevel(FlutterPluginUtil.getApplicationContext());
 
-                MsgTools.pirntMsg("getGDPRLevel: " + gdprDataLevel);
+                MsgTools.printMsg("getGDPRLevel: " + gdprDataLevel);
 
                 String levelString;
                 switch (gdprDataLevel) {
@@ -127,24 +135,24 @@ public class ATAdInitManger implements HandleAnyThinkMethod {
                         levelString = "ATDataConsentSetUnknown";
                         break;
                 }
-                MsgTools.pirntMsg("getGDPRLevel: callback to flutter: " + levelString);
+                MsgTools.printMsg("getGDPRLevel: callback to flutter: " + levelString);
                 result.success(levelString);
                 break;
             case "getUserLocation":
-                MsgTools.pirntMsg("getUserLocation");
+                MsgTools.printMsg("getUserLocation");
                 ATSDK.checkIsEuTraffic(FlutterPluginUtil.getApplicationContext(), new NetTrafficeCallback() {
                     @Override
                     public void onResultCallback(boolean b) {
-                        MsgTools.pirntMsg("getUserLocation: onResultCallback: " + b);
+                        MsgTools.printMsg("getUserLocation: onResultCallback: " + b);
 
                         final String result = b ? "1" : "2";
-                        MsgTools.pirntMsg("getUserLocation: callback to flutter: result: " + result);
+                        MsgTools.printMsg("getUserLocation: callback to flutter: result: " + result);
                         ATFlutterEventManager.getInstance().sendMsgToFlutter(Const.CallbackMethodCall.InitCallName, Const.InitCallback.locationCallbackKey, result);
                     }
 
                     @Override
                     public void onErrorCallback(String s) {
-                        MsgTools.pirntMsg("getUserLocation: onErrorCallback: " + s);
+                        MsgTools.printMsg("getUserLocation: onErrorCallback: " + s);
 
                         ATFlutterEventManager.getInstance().sendMsgToFlutter(Const.CallbackMethodCall.InitCallName, Const.InitCallback.locationCallbackKey, "0");//unknown
                     }
@@ -153,7 +161,7 @@ public class ATAdInitManger implements HandleAnyThinkMethod {
             case "setDataConsentSet":
                 String uploadDataLevel = methodCall.argument(Const.Init.GDPR_UPLOAD_DATA_LEVEL);
 
-                MsgTools.pirntMsg("setDataConsentSet: " + uploadDataLevel);
+                MsgTools.printMsg("setDataConsentSet: " + uploadDataLevel);
 
                 int level;
                 switch (uploadDataLevel) {
@@ -171,7 +179,7 @@ public class ATAdInitManger implements HandleAnyThinkMethod {
                 ATSDK.setGDPRUploadDataLevel(FlutterPluginUtil.getApplicationContext(), level);
                 break;
             case "showGDPRAuth":
-                MsgTools.pirntMsg("showGDPRAuth");
+                MsgTools.printMsg("showGDPRAuth");
 
                 FlutterPluginUtil.runOnUiThread(new Runnable() {
                     @Override
@@ -179,7 +187,7 @@ public class ATAdInitManger implements HandleAnyThinkMethod {
                         ATSDK.showGdprAuth(FlutterPluginUtil.getApplicationContext(), new ATGDPRAuthCallback() {
                             @Override
                             public void onAuthResult(int i) {
-                                MsgTools.pirntMsg("showGDPRAuth: onAuthResult: " + i);
+                                MsgTools.printMsg("showGDPRAuth: onAuthResult: " + i);
 
                                 String result;
                                 switch (i) {
@@ -193,13 +201,13 @@ public class ATAdInitManger implements HandleAnyThinkMethod {
                                         result = "0";//unknown
                                         break;
                                 }
-                                MsgTools.pirntMsg("showGDPRAuth: onAuthResult: callback to flutter: result: " + result);
+                                MsgTools.printMsg("showGDPRAuth: onAuthResult: callback to flutter: result: " + result);
                                 ATFlutterEventManager.getInstance().sendMsgToFlutter(Const.CallbackMethodCall.InitCallName, Const.InitCallback.consentSetCallbackKey, result);
                             }
 
                             @Override
                             public void onPageLoadFail() {
-                                MsgTools.pirntMsg("showGDPRAuth: onPageLoadFail");
+                                MsgTools.printMsg("showGDPRAuth: onPageLoadFail");
 
                                 ATFlutterEventManager.getInstance().sendMsgToFlutter(Const.CallbackMethodCall.InitCallName, Const.InitCallback.consentSetCallbackKey, "0");//unknown
                             }

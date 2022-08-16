@@ -21,6 +21,7 @@ class _NativeRouterState extends State<NativeRouter> {
 
   bool flag = false;
 
+
   _checkReadyToShow() {
     ATNativeManager.nativeAdReady(
       placementID: Configuration.nativePlacementID,
@@ -35,7 +36,11 @@ class _NativeRouterState extends State<NativeRouter> {
       } else {
         print('flutter native no cache');
       }
-
+    });
+  }
+  _remove() {
+    setState(() {
+      flag = false;
     });
   }
 
@@ -121,18 +126,16 @@ class _NativeRouterState extends State<NativeRouter> {
                           ))),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.white70),
-                      onPressed: _checkReadyToShow,
+                      onPressed: NativeManager.showNative,
+                      // onPressed: _checkReadyToShow,
                       child: Text("Show",
                           style: TextStyle(
                             color: Colors.black,
                           ))),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.white70),
-                      onPressed: () {
-                        setState(() {
-                          flag = false;
-                        });
-                      },
+                      onPressed: NativeManager.removeNativeAd,
+                      // onPressed: _remove,
                       child: Text("Remove",
                           style: TextStyle(
                             color: Colors.black,
@@ -148,15 +151,15 @@ class _NativeRouterState extends State<NativeRouter> {
                 ],
               ),
             ),
-            Expanded(
-                flex: 1,
-                child: Container(
-                  // height: 100,
-                  // width: 200,
-                  // color: Colors.deepPurple,
-                  margin: EdgeInsets.only(top: 20),
-                  child: _getNativeView(),
-                ))
+          //   Expanded(
+          //       flex: 1,
+          //       child: Container(
+          //         // height: 100,
+          //         // width: 200,
+          //         // color: Colors.deepPurple,
+          //         margin: EdgeInsets.only(top: 20),
+          //         child: _getNativeView(),
+          //       ))
           ],
         ),
       ),

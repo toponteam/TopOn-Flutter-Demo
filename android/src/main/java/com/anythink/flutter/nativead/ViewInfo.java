@@ -13,6 +13,7 @@ import com.anythink.flutter.utils.Const;
 import com.anythink.flutter.utils.FlutterPluginUtil;
 import com.anythink.flutter.utils.MsgTools;
 import com.anythink.flutter.utils.Utils;
+import com.anythink.nativead.api.ATNativeAdView;
 
 import java.util.Map;
 
@@ -128,42 +129,42 @@ public class ViewInfo {
         INFO _info = new INFO();
         if (settingsMap.containsKey(Const.X)) {
             _info.mX = Utils.dip2px(FlutterPluginUtil.getActivity(), (double) settingsMap.get(Const.X)) + px;
-            MsgTools.pirntMsg("parseINFO: name: " + name + " x -> " + _info.mX);
+            MsgTools.printMsg("parseINFO: name: " + name + " x -> " + _info.mX);
         }
 
         if (settingsMap.containsKey(Const.Y)) {
             _info.mY = Utils.dip2px(FlutterPluginUtil.getActivity(), (double) settingsMap.get(Const.Y)) + py;
-            MsgTools.pirntMsg("parseINFO: name: " + name + " y -> " + _info.mY);
+            MsgTools.printMsg("parseINFO: name: " + name + " y -> " + _info.mY);
 
         }
         if (settingsMap.containsKey(Const.WIDTH)) {
             _info.mWidth = Utils.dip2px(FlutterPluginUtil.getActivity(), (double) settingsMap.get(Const.WIDTH));
-            MsgTools.pirntMsg("parseINFO: name:" + name + " width -> " + _info.mWidth);
+            MsgTools.printMsg("parseINFO: name:" + name + " width -> " + _info.mWidth);
 
         }
         if (settingsMap.containsKey(Const.HEIGHT)) {
             _info.mHeight = Utils.dip2px(FlutterPluginUtil.getActivity(), (double) settingsMap.get(Const.HEIGHT));
-            MsgTools.pirntMsg("parseINFO: name:" + name + " height -> " + _info.mHeight);
+            MsgTools.printMsg("parseINFO: name:" + name + " height -> " + _info.mHeight);
 
         }
         if (settingsMap.containsKey(Const.BACKGROUND_COLOR)) {
             _info.bgcolor = (String) settingsMap.get(Const.BACKGROUND_COLOR);
-            MsgTools.pirntMsg("parseINFO: name:" + name + " bgColor ->" + _info.bgcolor);
+            MsgTools.printMsg("parseINFO: name:" + name + " bgColor ->" + _info.bgcolor);
 
         }
         if (settingsMap.containsKey(Const.TEXT_COLOR)) {
             _info.textcolor = (String) settingsMap.get(Const.TEXT_COLOR);
-            MsgTools.pirntMsg("parseINFO: name:" + name + " text_color -> " + _info.textcolor);
+            MsgTools.printMsg("parseINFO: name:" + name + " text_color -> " + _info.textcolor);
 
         }
         if (settingsMap.containsKey(Const.TEXT_SIZE)) {
             _info.textSize = Utils.dip2px(FlutterPluginUtil.getActivity(), (double) settingsMap.get(Const.TEXT_SIZE));
-            MsgTools.pirntMsg("parseINFO: name:" + name + " text_size -> " + _info.textSize);
+            MsgTools.printMsg("parseINFO: name:" + name + " text_size -> " + _info.textSize);
 
         }
         if (settingsMap.containsKey(Const.CUSTOM_CLICK)) {
             _info.isCustomClick = (boolean) settingsMap.get(Const.CUSTOM_CLICK);
-            MsgTools.pirntMsg("parseINFO: name:" + name + " custom_click -> " + _info.isCustomClick);
+            MsgTools.printMsg("parseINFO: name:" + name + " custom_click -> " + _info.isCustomClick);
 
         }
 
@@ -198,7 +199,7 @@ public class ViewInfo {
 //                pViewInfo.mView.setBackgroundColor(pViewInfo.bgcolor);
         try {
             if (!TextUtils.isEmpty(pViewInfo.bgcolor)) {
-                MsgTools.pirntMsg("setBackgroundColor : " + pViewInfo.bgcolor);
+                MsgTools.printMsg("setBackgroundColor : " + pViewInfo.bgcolor);
                 childView.setBackgroundColor(Color.parseColor(pViewInfo.bgcolor));
 
             } else {
@@ -212,5 +213,51 @@ public class ViewInfo {
 
     }
 
+
+    public static void addNativeAdView2Activity(final Activity pActivity, final ViewInfo pViewInfo, final ATNativeAdView mATNativeAdView, final int parentGravity) {
+
+        if (pActivity == null || mATNativeAdView == null) {
+            MsgTools.printMsg("pActivity or native ad view is null");
+            return;
+        }
+
+        pActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ViewGroup _viewGroup = (ViewGroup) mATNativeAdView.getParent();
+                    if (_viewGroup != null) {
+                        _viewGroup.removeView(mATNativeAdView);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+                if(pViewInfo.rootView != null){
+                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(pViewInfo.rootView.mWidth, pViewInfo.rootView.mHeight);
+
+                    if (parentGravity != -1) {
+                        layoutParams.gravity = parentGravity;
+                    } else {
+                        layoutParams.leftMargin = pViewInfo.rootView.mX;
+                        layoutParams.topMargin = pViewInfo.rootView.mY;
+                    }
+
+                    if(!TextUtils.isEmpty(pViewInfo.rootView.bgcolor)){
+                        mATNativeAdView.setBackgroundColor(Color.parseColor(pViewInfo.rootView.bgcolor));
+                    }
+
+                    MsgTools.printMsg("Add native view to content start....");
+                    pActivity.addContentView(mATNativeAdView, layoutParams);
+                    MsgTools.printMsg("Add native view to content end....");
+                } else {
+                    MsgTools.printMsg("pViewInfo.rootView is null");
+                }
+
+
+            }
+        });
+    }
 
 }

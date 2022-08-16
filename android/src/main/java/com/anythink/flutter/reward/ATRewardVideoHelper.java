@@ -1,12 +1,14 @@
 package com.anythink.flutter.reward;
 
 import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
 
-import com.anythink.china.api.ATAppDownloadListener;
+//import com.anythink.china.api.ATAppDownloadListener;
 import com.anythink.core.api.ATAdInfo;
 import com.anythink.core.api.ATAdStatusInfo;
-import com.anythink.core.api.ATSDK;
+import com.anythink.core.api.ATNetworkConfirmInfo;
+//import com.anythink.core.api.ATSDK;
 import com.anythink.core.api.AdError;
 import com.anythink.flutter.ATFlutterEventManager;
 import com.anythink.flutter.utils.Const;
@@ -38,7 +40,7 @@ public class ATRewardVideoHelper {
         mRewardVideoAd.setAdListener(new ATRewardVideoExListener() {
             @Override
             public void onDeeplinkCallback(ATAdInfo atAdInfo, boolean isSuccess) {
-                MsgTools.pirntMsg("video onDeeplinkCallback: " + mPlacementId);
+                MsgTools.printMsg("video onDeeplinkCallback: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.DeeplinkCallbackKey,
@@ -46,8 +48,59 @@ public class ATRewardVideoHelper {
             }
 
             @Override
+            public void onDownloadConfirm(Context context, ATAdInfo atAdInfo, ATNetworkConfirmInfo atNetworkConfirmInfo) {
+                MsgTools.printMsg("video onDownloadConfirm: " + mPlacementId);
+            }
+
+            @Override
+            public void onRewardedVideoAdAgainPlayStart(ATAdInfo atAdInfo) {
+                MsgTools.printMsg("onRewardedVideoAdAgainPlayStart: " + mPlacementId);
+
+                ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
+                        Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.AgainPlayStartCallbackKey,
+                        mPlacementId, atAdInfo.toString(), null);
+            }
+
+            @Override
+            public void onRewardedVideoAdAgainPlayEnd(ATAdInfo atAdInfo) {
+                MsgTools.printMsg("onRewardedVideoAdAgainPlayEnd: " + mPlacementId);
+
+                ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
+                        Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.AgainPlayEndCallbackKey,
+                        mPlacementId, atAdInfo.toString(), null);
+            }
+
+            @Override
+            public void onRewardedVideoAdAgainPlayFailed(AdError adError, ATAdInfo atAdInfo) {
+                MsgTools.printMsg("onRewardedVideoAdAgainPlayFailed: " + mPlacementId);
+
+                ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
+                        Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.AgainPlayFailCallbackKey,
+                        mPlacementId, atAdInfo.toString(), null);
+            }
+
+            @Override
+            public void onRewardedVideoAdAgainPlayClicked(ATAdInfo atAdInfo) {
+                MsgTools.printMsg("onRewardedVideoAdAgainPlayClicked: " + mPlacementId);
+
+                ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
+                        Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.AgainClickCallbackKey,
+                        mPlacementId, atAdInfo.toString(), null);
+            }
+
+            @Override
+            public void onAgainReward(ATAdInfo atAdInfo) {
+                MsgTools.printMsg("onAgainReward: " + mPlacementId);
+
+                ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
+                        Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.AgainRewardCallbackKey,
+                        mPlacementId, atAdInfo.toString(), null);
+            }
+
+
+            @Override
             public void onRewardedVideoAdLoaded() {
-                MsgTools.pirntMsg("onRewardedVideoAdLoaded: " + mPlacementId);
+                MsgTools.printMsg("onRewardedVideoAdLoaded: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.LoadedCallbackKey,
@@ -56,7 +109,7 @@ public class ATRewardVideoHelper {
 
             @Override
             public void onRewardedVideoAdFailed(AdError adError) {
-                MsgTools.pirntMsg("onRewardedVideoAdFailed: " + mPlacementId + ", " + adError.getFullErrorInfo());
+                MsgTools.printMsg("onRewardedVideoAdFailed: " + mPlacementId + ", " + adError.getFullErrorInfo());
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.LoadFailCallbackKey,
@@ -65,7 +118,7 @@ public class ATRewardVideoHelper {
 
             @Override
             public void onRewardedVideoAdPlayStart(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onRewardedVideoAdPlayStart: " + mPlacementId);
+                MsgTools.printMsg("onRewardedVideoAdPlayStart: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.PlayStartCallbackKey,
@@ -74,7 +127,7 @@ public class ATRewardVideoHelper {
 
             @Override
             public void onRewardedVideoAdPlayEnd(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onRewardedVideoAdPlayEnd: " + mPlacementId);
+                MsgTools.printMsg("onRewardedVideoAdPlayEnd: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.PlayEndCallbackKey,
@@ -83,7 +136,7 @@ public class ATRewardVideoHelper {
 
             @Override
             public void onRewardedVideoAdPlayFailed(AdError adError, ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onRewardedVideoAdPlayFailed: " + mPlacementId + ", " + adError.getFullErrorInfo());
+                MsgTools.printMsg("onRewardedVideoAdPlayFailed: " + mPlacementId + ", " + adError.getFullErrorInfo());
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.PlayFailCallbackKey,
@@ -92,7 +145,7 @@ public class ATRewardVideoHelper {
 
             @Override
             public void onRewardedVideoAdClosed(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onRewardedVideoAdClosed: " + mPlacementId);
+                MsgTools.printMsg("onRewardedVideoAdClosed: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.CloseCallbackKey,
@@ -101,7 +154,7 @@ public class ATRewardVideoHelper {
 
             @Override
             public void onRewardedVideoAdPlayClicked(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onRewardedVideoAdPlayClicked: " + mPlacementId);
+                MsgTools.printMsg("onRewardedVideoAdPlayClicked: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.ClickCallbackKey,
@@ -110,7 +163,7 @@ public class ATRewardVideoHelper {
 
             @Override
             public void onReward(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onReward: " + mPlacementId);
+                MsgTools.printMsg("onReward: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.rewardedVideoCall, Const.RewardVideoCallback.RewardCallbackKey,
@@ -118,64 +171,66 @@ public class ATRewardVideoHelper {
             }
         });
 
-        try {
-            if (ATSDK.isCnSDK()) {
-                mRewardVideoAd.setAdDownloadListener(new ATAppDownloadListener() {
-                    @Override
-                    public void onDownloadStart(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("video onDownloadStart: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
+        //download
+//        try {
+//            if (ATSDK.isCnSDK()) {
+//                mRewardVideoAd.setAdDownloadListener(new ATAppDownloadListener() {
+//                    @Override
+//                    public void onDownloadStart(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("video onDownloadStart: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadStartKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadUpdate(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("video onDownloadUpdate: " + mPlacementId);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadUpdateKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadPause(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("video onDownloadPause: " + mPlacementId);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadPauseKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadFinish(ATAdInfo atAdInfo, long totalBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("video onDownloadFinish: " + mPlacementId + ", " + totalBytes  + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFinishedKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, -1, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadFail(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("video onDownloadFail: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFailedKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onInstalled(ATAdInfo atAdInfo, String fileName, String appName) {
+//                        MsgTools.printMsg("video onInstalled: " + mPlacementId + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadInstalledKey,
+//                                mPlacementId, atAdInfo.toString(), -1, -1, fileName, appName);
+//                    }
+//                });
+//            }
+//        } catch (Throwable e) {
+//        }
 
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadStartKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadUpdate(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("video onDownloadUpdate: " + mPlacementId);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadUpdateKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadPause(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("video onDownloadPause: " + mPlacementId);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadPauseKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadFinish(ATAdInfo atAdInfo, long totalBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("video onDownloadFinish: " + mPlacementId + ", " + totalBytes  + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFinishedKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, -1, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadFail(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("video onDownloadFail: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFailedKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onInstalled(ATAdInfo atAdInfo, String fileName, String appName) {
-                        MsgTools.pirntMsg("video onInstalled: " + mPlacementId + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadInstalledKey,
-                                mPlacementId, atAdInfo.toString(), -1, -1, fileName, appName);
-                    }
-                });
-            }
-        } catch (Throwable e) {
-        }
     }
 
     public void loadRewardedVideo(final String placementId, final Map<String, Object> settings) {
-        MsgTools.pirntMsg("loadRewardedVideo: " + placementId + ", settings: " + settings);
+        MsgTools.printMsg("loadRewardedVideo: " + placementId + ", settings: " + settings);
 
         if (mRewardVideoAd == null) {
             initRewardVideo(placementId);
@@ -199,7 +254,7 @@ public class ATRewardVideoHelper {
             e.printStackTrace();
         }
 
-        MsgTools.pirntMsg("loadRewardedVideo: " + placementId + ", userId: " + userId + ", userData: " + userData);
+        MsgTools.printMsg("loadRewardedVideo: " + placementId + ", userId: " + userId + ", userData: " + userData);
 
         settings.put("user_id", userId);
         settings.put("user_custom_data", userData);
@@ -210,7 +265,7 @@ public class ATRewardVideoHelper {
     }
 
     public void showRewardedVideo(final String scenario) {
-        MsgTools.pirntMsg("showRewardedVideo: " + mPlacementId + ", scenario: " + scenario);
+        MsgTools.printMsg("showRewardedVideo: " + mPlacementId + ", scenario: " + scenario);
 
         if (mRewardVideoAd != null) {
             if (!TextUtils.isEmpty(scenario)) {
@@ -222,19 +277,19 @@ public class ATRewardVideoHelper {
     }
 
     public boolean isAdReady() {
-        MsgTools.pirntMsg("video isAdReady: " + mPlacementId);
+        MsgTools.printMsg("video isAdReady: " + mPlacementId);
 
         boolean isReady = false;
         if (mRewardVideoAd != null) {
             isReady = mRewardVideoAd.isAdReady();
         }
 
-        MsgTools.pirntMsg("video isAdReady: " + mPlacementId + ", " + isReady);
+        MsgTools.printMsg("video isAdReady: " + mPlacementId + ", " + isReady);
         return isReady;
     }
 
     public Map<String, Object> checkAdStatus() {
-        MsgTools.pirntMsg("video checkAdStatus: " + mPlacementId);
+        MsgTools.printMsg("video checkAdStatus: " + mPlacementId);
 
         Map<String, Object> map = new HashMap<>(5);
 
@@ -261,7 +316,7 @@ public class ATRewardVideoHelper {
     }
 
     public String checkValidAdCaches() {
-        MsgTools.pirntMsg("video checkValidAdCaches: " + mPlacementId);
+        MsgTools.printMsg("video checkValidAdCaches: " + mPlacementId);
 
         if (mRewardVideoAd != null) {
             List<ATAdInfo> vaildAds = mRewardVideoAd.checkValidAdCaches();

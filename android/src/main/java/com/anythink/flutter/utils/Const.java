@@ -9,6 +9,9 @@ public class Const {
     public static final String PLACEMENT_ID = "placementID";
     public static final String SCENE_ID = "sceneID";
     public static final String SIZE = "size";
+    public static final String POSITION = "position";
+    public static final String POSITION_TOP = "kATBannerAdShowingPositionTop";
+    public static final String POSITION_BOTTOM = "kATBannerAdShowingPositionBottom";
 
     public static final String BACKGROUND_COLOR = "backgroundColorStr";
     public static final String TEXT_COLOR = "textColorStr";
@@ -84,6 +87,12 @@ public class Const {
         public static final String ClickCallbackKey = "rewardedVideoDidClick";
         public static final String RewardCallbackKey = "rewardedVideoDidRewardSuccess";
         public static final String DeeplinkCallbackKey = "rewardedVideoDidDeepLink";
+
+        public static final String AgainPlayStartCallbackKey = "rewardedVideoDidAgainStartPlaying";
+        public static final String AgainPlayEndCallbackKey = "rewardedVideoDidAgainEndPlaying";
+        public static final String AgainPlayFailCallbackKey = "rewardedVideoDidAgainFailToPlay";
+        public static final String AgainClickCallbackKey = "rewardedVideoDidAgainClick";
+        public static final String AgainRewardCallbackKey = "rewardedVideoDidAgainRewardSuccess";
     }
 
     public static class InterstitialCallback {
@@ -154,9 +163,11 @@ public class Const {
     public static String[] rewardVideoMethodNames = {"loadRewardedVideo", "showRewardedVideo", "showSceneRewardedVideo",
             "rewardedVideoReady", "checkRewardedVideoLoadStatus", "getRewardedVideoValidAds"};
 
-    public static String[] bannerMethodNames = {"loadBannerAd", "bannerAdReady", "checkBannerLoadStatus", "getBannerValidAds"};
+    public static String[] bannerMethodNames = {"loadBannerAd", "bannerAdReady", "checkBannerLoadStatus", "getBannerValidAds",
+            "showBannerInRectangle", "showSceneBannerInRectangle", "showAdInPosition", "showSceneBannerAdInPosition", "removeBannerAd", "hideBannerAd", "afreshShowBannerAd"};
 
-    public static String[] nativeMethodNames = {"loadNativeAd", "nativeAdReady", "checkNativeAdLoadStatus", "getNativeValidAds"};
+    public static String[] nativeMethodNames = {"loadNativeAd", "nativeAdReady", "checkNativeAdLoadStatus", "getNativeValidAds",
+            "showNativeAd", "showSceneNativeAd", "removeNativeAd"};
 
 
 }

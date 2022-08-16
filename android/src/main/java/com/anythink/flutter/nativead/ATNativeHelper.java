@@ -3,15 +3,16 @@ package com.anythink.flutter.nativead;
 import android.app.Activity;
 import android.graphics.Color;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.anythink.china.api.ATAppDownloadListener;
+//import com.anythink.china.api.ATAppDownloadListener;
 import com.anythink.core.api.ATAdConst;
 import com.anythink.core.api.ATAdInfo;
 import com.anythink.core.api.ATAdStatusInfo;
-import com.anythink.core.api.ATSDK;
+//import com.anythink.core.api.ATSDK;
 import com.anythink.core.api.AdError;
 import com.anythink.flutter.ATFlutterEventManager;
 import com.anythink.flutter.AnythinkSdkPlugin;
@@ -24,6 +25,8 @@ import com.anythink.nativead.api.ATNativeAdView;
 import com.anythink.nativead.api.ATNativeDislikeListener;
 import com.anythink.nativead.api.ATNativeEventExListener;
 import com.anythink.nativead.api.ATNativeNetworkListener;
+import com.anythink.nativead.api.ATNativePrepareExInfo;
+import com.anythink.nativead.api.ATNativePrepareInfo;
 import com.anythink.nativead.api.NativeAd;
 
 import org.json.JSONArray;
@@ -38,7 +41,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
     String mPlacementId;
 
     ATNative mATNative;
-    ATNativeAdView anyThinkNativeAdView;
+    ATNativeAdView atNativeAdView;//Only for native api(Non-Platform View)
     NativeAd mNativeAd;
 
     int adViewWidth;
@@ -50,6 +53,8 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
     Activity mActivity;
 
+    ATNativePrepareInfo mNativePrepareInfo;
+
     public ATNativeHelper() {
         mActivity = FlutterPluginUtil.getActivity();
     }
@@ -60,7 +65,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
         mATNative = new ATNative(mActivity, placementId, new ATNativeNetworkListener() {
             @Override
             public void onNativeAdLoaded() {
-                MsgTools.pirntMsg("onNativeAdLoaded: " + mPlacementId);
+                MsgTools.printMsg("onNativeAdLoaded: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.NativeCall, Const.NativeCallback.LoadedCallbackKey,
@@ -69,7 +74,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onNativeAdLoadFail(AdError adError) {
-                MsgTools.pirntMsg("onNativeAdLoadFail: " + mPlacementId + ", " + adError.getFullErrorInfo());
+                MsgTools.printMsg("onNativeAdLoadFail: " + mPlacementId + ", " + adError.getFullErrorInfo());
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.NativeCall, Const.NativeCallback.LoadFailCallbackKey,
@@ -82,7 +87,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
         if (mATNative == null) {
             initNative(placementId);
         }
-           
+
         if (mATNative != null) {
             if (settings != null) {
                 try {
@@ -91,7 +96,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
                     adViewWidth = Utils.dip2px(mActivity, (double) nativeAdSize.get(Const.WIDTH));
                     adViewHeight = Utils.dip2px(mActivity, (double) nativeAdSize.get(Const.HEIGHT));
 
-                    MsgTools.pirntMsg("loadNative: " + placementId + ", width: " + adViewWidth + ", height: " + adViewHeight);
+                    MsgTools.printMsg("loadNative: " + placementId + ", width: " + adViewWidth + ", height: " + adViewHeight);
 
                     settings.put(ATAdConst.KEY.AD_WIDTH, adViewWidth);
                     settings.put(ATAdConst.KEY.AD_HEIGHT, adViewHeight);
@@ -102,7 +107,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
                 try {
                     if (settings.containsKey(Const.Native.isAdaptiveHeight)) {
                         boolean isAdaptiveHeight = (boolean) settings.get(Const.Native.isAdaptiveHeight);//Adaptive height
-                        MsgTools.pirntMsg("loadNative: " + placementId + ", isAdaptiveHeight: " + isAdaptiveHeight);
+                        MsgTools.printMsg("loadNative: " + placementId + ", isAdaptiveHeight: " + isAdaptiveHeight);
                         if (isAdaptiveHeight) {
                             settings.put("tt_image_height", 0);
                             settings.put("gdtad_height", -2);
@@ -120,7 +125,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
 
     public boolean isReady() {
-        MsgTools.pirntMsg("native isReady: " + mPlacementId);
+        MsgTools.printMsg("native isReady: " + mPlacementId);
 
         boolean isReady = false;
         if (mATNative != null) {
@@ -128,12 +133,12 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
             isReady = atAdStatusInfo.isReady();
         }
 
-        MsgTools.pirntMsg("native isReady: " + mPlacementId + ", " + isReady);
+        MsgTools.printMsg("native isReady: " + mPlacementId + ", " + isReady);
         return isReady;
     }
 
     public Map<String, Object> checkAdStatus() {
-        MsgTools.pirntMsg("native checkAdStatus: " + mPlacementId);
+        MsgTools.printMsg("native checkAdStatus: " + mPlacementId);
 
         Map<String, Object> map = new HashMap<>(5);
 
@@ -160,7 +165,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
     }
 
     public String checkValidAdCaches() {
-        MsgTools.pirntMsg("native checkValidAdCaches: " + mPlacementId);
+        MsgTools.printMsg("native checkValidAdCaches: " + mPlacementId);
 
         if (mATNative != null) {
             List<ATAdInfo> vaildAds = mATNative.checkValidAdCaches();
@@ -184,12 +189,13 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
     }
 
-    public void renderNativeView(final Map<String, Object> settings, final String sceneID, boolean isAdaptiveHeight) {
+
+    public ATNativeAdView renderNativeView(final Map<String, Object> settings, final String sceneID, boolean isAdaptiveHeight, boolean fromPlatformView) {
         if (mATNative == null) {
-            MsgTools.pirntMsg("native error, you must call loadNative first");
-            return;
+            MsgTools.printMsg("native error, you must call loadNative first");
+            return null;
         }
-        MsgTools.pirntMsg("renderNativeView: " + mPlacementId);
+        MsgTools.printMsg("renderNativeView: " + mPlacementId + ", settings: " + (settings != null ? settings.toString() : "") + ", scenario: " + sceneID + ", isAdaptiveHeight: " + isAdaptiveHeight);
         NativeAd nativeAd;
 
         if (!TextUtils.isEmpty(sceneID)) {
@@ -200,9 +206,19 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
         if (nativeAd != null) {
 
-            anyThinkNativeAdView = new ATNativeAdView(mActivity);
+            ATNativeAdView anyThinkNativeAdView;
 
-            MsgTools.pirntMsg("nativeAd:" + nativeAd.toString());
+            if (fromPlatformView) {
+                anyThinkNativeAdView = new ATNativeAdView(mActivity);
+
+            } else {
+                if (atNativeAdView == null) {
+                    atNativeAdView = new ATNativeAdView(mActivity);
+                }
+                anyThinkNativeAdView = atNativeAdView;
+            }
+
+            MsgTools.printMsg("nativeAd:" + nativeAd.toString());
             pViewInfo = parseViewInfo(settings);
             mNativeAd = nativeAd;
 
@@ -210,41 +226,63 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
             if (isAdaptiveHeight) {//Adaptive height
                 if (pViewInfo.rootView != null) {
-                    MsgTools.pirntMsg("nativeAd: rootView, use adaptive height for express");
+                    MsgTools.printMsg("nativeAd: rootView, use adaptive height for express");
                     pViewInfo.rootView.mHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
                 }
             }
 
-            NativeRender atUnityRender = new NativeRender(mActivity, pViewInfo);
+            mNativePrepareInfo = null;
+
             try {
-                if (pViewInfo.dislikeView != null) {
-                    initDislikeView(pViewInfo.dislikeView);
+                if (nativeAd.isNativeExpress()) {
+                    MsgTools.printMsg("nativeAd: template-rendering, " + mPlacementId);
+                    nativeAd.renderAdContainer(anyThinkNativeAdView, null);
+                } else {
+                    MsgTools.printMsg("nativeAd: self-rendering, " + mPlacementId);
+                    SelfRenderViewUtil selfRenderViewUtil = new SelfRenderViewUtil(mActivity, pViewInfo, mNativeAd.getAdInfo().getNetworkFirmId());
+                    mNativePrepareInfo = new ATNativePrepareExInfo();
 
-                    atUnityRender.setDislikeView(mDislikeView);
+                    View selfRenderView = selfRenderViewUtil.bindSelfRenderView(mNativeAd.getAdMaterial(), mNativePrepareInfo, pViewInfo);
+
+                    mNativeAd.renderAdContainer(anyThinkNativeAdView, selfRenderView);
                 }
+            } catch (Throwable e) {
 
-                nativeAd.renderAdView(anyThinkNativeAdView, atUnityRender);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+
+            mNativeAd.prepare(anyThinkNativeAdView, mNativePrepareInfo);
+
+
+//            NativeRender atUnityRender = new NativeRender(mActivity, pViewInfo);
+//            try {
+//                if (pViewInfo.dislikeView != null) {
+//                    initDislikeView(pViewInfo.dislikeView);
+//
+//                    atUnityRender.setDislikeView(mDislikeView);
+//                }
+//
+//                nativeAd.renderAdView(anyThinkNativeAdView, atUnityRender);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
 //            add dislike button
-            if (pViewInfo.dislikeView != null && mDislikeView != null) {
-                if (mDislikeView.getParent() != null) {
-                    ((ViewGroup) mDislikeView.getParent()).removeView(mDislikeView);
-                }
+//            if (pViewInfo.dislikeView != null && mDislikeView != null) {
+//                if (mDislikeView.getParent() != null) {
+//                    ((ViewGroup) mDislikeView.getParent()).removeView(mDislikeView);
+//                }
+//
+//                anyThinkNativeAdView.addView(mDislikeView);
+//            }
 
-                anyThinkNativeAdView.addView(mDislikeView);
-            }
-
-            if (pViewInfo.adLogoView != null) {
-                FrameLayout.LayoutParams adLogoLayoutParams = new FrameLayout.LayoutParams(pViewInfo.adLogoView.mWidth, pViewInfo.adLogoView.mHeight);
-                adLogoLayoutParams.leftMargin = pViewInfo.adLogoView.mX;
-                adLogoLayoutParams.topMargin = pViewInfo.adLogoView.mY;
-                nativeAd.prepare(anyThinkNativeAdView, atUnityRender.getClickViews(), adLogoLayoutParams);
-            } else {
-                nativeAd.prepare(anyThinkNativeAdView, atUnityRender.getClickViews(), null);
-            }
+//            if (pViewInfo.adLogoView != null) {
+//                FrameLayout.LayoutParams adLogoLayoutParams = new FrameLayout.LayoutParams(pViewInfo.adLogoView.mWidth, pViewInfo.adLogoView.mHeight);
+//                adLogoLayoutParams.leftMargin = pViewInfo.adLogoView.mX;
+//                adLogoLayoutParams.topMargin = pViewInfo.adLogoView.mY;
+//                nativeAd.prepare(anyThinkNativeAdView, atUnityRender.getClickViews(), adLogoLayoutParams);
+//            } else {
+//                nativeAd.prepare(anyThinkNativeAdView, atUnityRender.getClickViews(), null);
+//            }
 
             if (pViewInfo.rootView != null) {
                 try {
@@ -257,11 +295,17 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
                 }
             }
 
+            if (!fromPlatformView) {
+                ViewInfo.addNativeAdView2Activity(mActivity, pViewInfo, anyThinkNativeAdView, -1);
+            }
+
+            return anyThinkNativeAdView;
 
         } else {
-            MsgTools.pirntMsg("nativeAd: " + mPlacementId + ", no cache");
+            MsgTools.printMsg("nativeAd: " + mPlacementId + ", no cache");
         }
 
+        return null;
     }
 
     private void setListener() {
@@ -269,7 +313,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
         mNativeAd.setNativeEventListener(new ATNativeEventExListener() {
             @Override
             public void onDeeplinkCallback(ATNativeAdView atNativeAdView, ATAdInfo atAdInfo, boolean isSuccess) {
-                MsgTools.pirntMsg("native onDeeplinkCallback: " + mPlacementId);
+                MsgTools.printMsg("native onDeeplinkCallback: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.NativeCall, Const.NativeCallback.DeeplinkCallbackKey,
@@ -278,7 +322,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onAdImpressed(ATNativeAdView view, ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("native onAdImpressed: " + mPlacementId);
+                MsgTools.printMsg("native onAdImpressed: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.NativeCall, Const.NativeCallback.ShowCallbackKey,
@@ -287,7 +331,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onAdClicked(ATNativeAdView view, ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("native onAdClicked: " + mPlacementId);
+                MsgTools.printMsg("native onAdClicked: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.NativeCall, Const.NativeCallback.ClickCallbackKey,
@@ -296,7 +340,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onAdVideoStart(ATNativeAdView view) {
-                MsgTools.pirntMsg("native onAdImpressed: " + mPlacementId);
+                MsgTools.printMsg("native onAdImpressed: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.NativeCall, Const.NativeCallback.VideoStartKey,
@@ -305,7 +349,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onAdVideoEnd(ATNativeAdView view) {
-                MsgTools.pirntMsg("native onAdVideoEnd: " + mPlacementId);
+                MsgTools.printMsg("native onAdVideoEnd: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.NativeCall, Const.NativeCallback.VideoEndKey,
@@ -314,7 +358,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onAdVideoProgress(ATNativeAdView view, int progress) {
-//                    MsgTools.pirntMsg("native onAdVideoProgress: " + mPlacementId);
+//                    MsgTools.printMsg("native onAdVideoProgress: " + mPlacementId);
 //
 //                    ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
 //                            Const.CallbackMethodCall.NativeCall, Const.NativeCallback.VideoProgressKey,
@@ -326,7 +370,7 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
         mNativeAd.setDislikeCallbackListener(new ATNativeDislikeListener() {
             @Override
             public void onAdCloseButtonClick(ATNativeAdView view, ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("native onAdCloseButtonClick: " + mPlacementId);
+                MsgTools.printMsg("native onAdCloseButtonClick: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.NativeCall, Const.NativeCallback.CloseCallbackKey,
@@ -335,60 +379,60 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
         });
 
         // download
-        try {
-            if (ATSDK.isCnSDK()) {
-                mNativeAd.setAdDownloadListener(new ATAppDownloadListener() {
-                    @Override
-                    public void onDownloadStart(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("native onDownloadStart: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadStartKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadUpdate(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("native onDownloadUpdate: " + mPlacementId);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadUpdateKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadPause(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("native onDownloadPause: " + mPlacementId);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadPauseKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadFinish(ATAdInfo atAdInfo, long totalBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("native onDownloadFinish: " + mPlacementId + ", " + totalBytes + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFinishedKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, -1, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadFail(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("native onDownloadFail: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFailedKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onInstalled(ATAdInfo atAdInfo, String fileName, String appName) {
-                        MsgTools.pirntMsg("native onInstalled: " + mPlacementId + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadInstalledKey,
-                                mPlacementId, atAdInfo.toString(), -1, -1, fileName, appName);
-                    }
-                });
-            }
-        } catch (Throwable e) {
-        }
+//        try {
+//            if (ATSDK.isCnSDK()) {
+//                mNativeAd.setAdDownloadListener(new ATAppDownloadListener() {
+//                    @Override
+//                    public void onDownloadStart(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("native onDownloadStart: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadStartKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadUpdate(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("native onDownloadUpdate: " + mPlacementId);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadUpdateKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadPause(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("native onDownloadPause: " + mPlacementId);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadPauseKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadFinish(ATAdInfo atAdInfo, long totalBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("native onDownloadFinish: " + mPlacementId + ", " + totalBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFinishedKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, -1, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadFail(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("native onDownloadFail: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFailedKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onInstalled(ATAdInfo atAdInfo, String fileName, String appName) {
+//                        MsgTools.printMsg("native onInstalled: " + mPlacementId + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadInstalledKey,
+//                                mPlacementId, atAdInfo.toString(), -1, -1, fileName, appName);
+//                    }
+//                });
+//            }
+//        } catch (Throwable e) {
+//        }
     }
 
 
@@ -425,50 +469,50 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
 
         if (settingsMap.containsKey((Const.Native.parent))) {
             Map<String, Object> tempjson = (Map<String, Object>) settingsMap.get(Const.Native.parent);
-            MsgTools.pirntMsg("parent----> " + tempjson);
+            MsgTools.printMsg("parent----> " + tempjson);
             pViewInfo.rootView = pViewInfo.parseINFO(tempjson, "parent", 0, 0);
         }
 
         if (settingsMap.containsKey(Const.Native.icon)) {
             Map<String, Object> tempjson = (Map<String, Object>) settingsMap.get(Const.Native.icon);
-            MsgTools.pirntMsg("appIcon----> " + tempjson);
+            MsgTools.printMsg("appIcon----> " + tempjson);
             pViewInfo.IconView = pViewInfo.parseINFO(tempjson, "appIcon", 0, 0);
         }
 
         if (settingsMap.containsKey(Const.Native.mainImage)) {
             Map<String, Object> tempjson = (Map<String, Object>) settingsMap.get(Const.Native.mainImage);
-            MsgTools.pirntMsg("mainImage----> " + tempjson);
+            MsgTools.printMsg("mainImage----> " + tempjson);
             pViewInfo.imgMainView = pViewInfo.parseINFO(tempjson, "mainImage", 0, 0);
 
         }
 
         if (settingsMap.containsKey(Const.Native.title)) {
             Map<String, Object> tempjson = (Map<String, Object>) settingsMap.get(Const.Native.title);
-            MsgTools.pirntMsg("title----> " + tempjson);
+            MsgTools.printMsg("title----> " + tempjson);
             pViewInfo.titleView = pViewInfo.parseINFO(tempjson, "title", 0, 0);
         }
 
         if (settingsMap.containsKey(Const.Native.desc)) {
             Map<String, Object> tempjson = (Map<String, Object>) settingsMap.get(Const.Native.desc);
-            MsgTools.pirntMsg("desc----> " + tempjson);
+            MsgTools.printMsg("desc----> " + tempjson);
             pViewInfo.descView = pViewInfo.parseINFO(tempjson, "desc", 0, 0);
         }
 
         if (settingsMap.containsKey(Const.Native.adLogo)) {
             Map<String, Object> tempjson = (Map<String, Object>) settingsMap.get(Const.Native.adLogo);
-            MsgTools.pirntMsg("adLogo----> " + tempjson);
+            MsgTools.printMsg("adLogo----> " + tempjson);
             pViewInfo.adLogoView = pViewInfo.parseINFO(tempjson, "adLogo", 0, 0);
         }
 
         if (settingsMap.containsKey(Const.Native.cta)) {
             Map<String, Object> tempjson = (Map<String, Object>) settingsMap.get(Const.Native.cta);
-            MsgTools.pirntMsg("cta----> " + tempjson);
+            MsgTools.printMsg("cta----> " + tempjson);
             pViewInfo.ctaView = pViewInfo.parseINFO(tempjson, "cta", 0, 0);
         }
 
         if (settingsMap.containsKey(Const.Native.dislike)) {
             Map<String, Object> tempjson = (Map<String, Object>) settingsMap.get(Const.Native.dislike);
-            MsgTools.pirntMsg("dislike----> " + tempjson);
+            MsgTools.printMsg("dislike----> " + tempjson);
             pViewInfo.dislikeView = pViewInfo.parseINFO(tempjson, "dislike", 0, 0);
         }
 
@@ -476,7 +520,17 @@ public class ATNativeHelper extends AnythinkSdkPlugin {
     }
 
 
-    public ATNativeAdView getNativeView() {
-        return anyThinkNativeAdView;
+    public void showNativeAd(Map<String, Object> settingMap, String scenario, boolean isAdaptiveHeight) {
+        renderNativeView(settingMap, scenario, isAdaptiveHeight, false);
+    }
+
+    public void removeNativeAd() {
+        MsgTools.printMsg("native removeNativeAd: " + mPlacementId);
+
+        if (atNativeAdView != null) {
+            if (atNativeAdView.getParent() != null) {
+                ((ViewGroup) atNativeAdView.getParent()).removeView(atNativeAdView);
+            }
+        }
     }
 }

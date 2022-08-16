@@ -1,12 +1,14 @@
 package com.anythink.flutter.interstitial;
 
 import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
 
-import com.anythink.china.api.ATAppDownloadListener;
+//import com.anythink.china.api.ATAppDownloadListener;
 import com.anythink.core.api.ATAdInfo;
 import com.anythink.core.api.ATAdStatusInfo;
-import com.anythink.core.api.ATSDK;
+import com.anythink.core.api.ATNetworkConfirmInfo;
+//import com.anythink.core.api.ATSDK;
 import com.anythink.core.api.AdError;
 import com.anythink.flutter.ATFlutterEventManager;
 import com.anythink.flutter.utils.Const;
@@ -39,7 +41,7 @@ public class ATInterstitialHelper {
         mInterstitialAd.setAdListener(new ATInterstitialExListener() {
             @Override
             public void onDeeplinkCallback(ATAdInfo atAdInfo, boolean isSuccess) {
-                MsgTools.pirntMsg("interstitial onDeeplinkCallback: " + mPlacementId);
+                MsgTools.printMsg("interstitial onDeeplinkCallback: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.InterstitialCall, Const.InterstitialCallback.DeeplinkCallbackKey,
@@ -47,8 +49,13 @@ public class ATInterstitialHelper {
             }
 
             @Override
+            public void onDownloadConfirm(Context context, ATAdInfo atAdInfo, ATNetworkConfirmInfo atNetworkConfirmInfo) {
+                MsgTools.printMsg("interstitial onDownloadConfirm: " + mPlacementId);
+            }
+
+            @Override
             public void onInterstitialAdLoaded() {
-                MsgTools.pirntMsg("onInterstitialAdLoaded: " + mPlacementId);
+                MsgTools.printMsg("onInterstitialAdLoaded: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.InterstitialCall, Const.InterstitialCallback.LoadedCallbackKey,
@@ -57,7 +64,7 @@ public class ATInterstitialHelper {
 
             @Override
             public void onInterstitialAdLoadFail(AdError adError) {
-                MsgTools.pirntMsg("onInterstitialAdLoadFail: " + mPlacementId + ", " + adError.getFullErrorInfo());
+                MsgTools.printMsg("onInterstitialAdLoadFail: " + mPlacementId + ", " + adError.getFullErrorInfo());
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.InterstitialCall, Const.InterstitialCallback.LoadFailCallbackKey,
@@ -66,7 +73,7 @@ public class ATInterstitialHelper {
 
             @Override
             public void onInterstitialAdClicked(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onInterstitialAdClicked: " + mPlacementId);
+                MsgTools.printMsg("onInterstitialAdClicked: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.InterstitialCall, Const.InterstitialCallback.ClickCallbackKey,
@@ -75,7 +82,7 @@ public class ATInterstitialHelper {
 
             @Override
             public void onInterstitialAdShow(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onInterstitialAdShow: " + mPlacementId);
+                MsgTools.printMsg("onInterstitialAdShow: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.InterstitialCall, Const.InterstitialCallback.ShowCallbackKey,
@@ -84,7 +91,7 @@ public class ATInterstitialHelper {
 
             @Override
             public void onInterstitialAdClose(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onInterstitialAdClose: " + mPlacementId);
+                MsgTools.printMsg("onInterstitialAdClose: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.InterstitialCall, Const.InterstitialCallback.CloseCallbackKey,
@@ -93,7 +100,7 @@ public class ATInterstitialHelper {
 
             @Override
             public void onInterstitialAdVideoStart(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onInterstitialAdVideoStart: " + mPlacementId);
+                MsgTools.printMsg("onInterstitialAdVideoStart: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.InterstitialCall, Const.InterstitialCallback.PlayStartCallbackKey,
@@ -102,7 +109,7 @@ public class ATInterstitialHelper {
 
             @Override
             public void onInterstitialAdVideoEnd(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onInterstitialAdVideoEnd: " + mPlacementId);
+                MsgTools.printMsg("onInterstitialAdVideoEnd: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.InterstitialCall, Const.InterstitialCallback.PlayEndCallbackKey,
@@ -111,7 +118,7 @@ public class ATInterstitialHelper {
 
             @Override
             public void onInterstitialAdVideoError(AdError adError) {
-                MsgTools.pirntMsg("onInterstitialAdVideoError: " + mPlacementId + ", " + adError.getFullErrorInfo());
+                MsgTools.printMsg("onInterstitialAdVideoError: " + mPlacementId + ", " + adError.getFullErrorInfo());
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.InterstitialCall, Const.InterstitialCallback.PlayFailCallbackKey,
@@ -119,64 +126,65 @@ public class ATInterstitialHelper {
             }
         });
 
-        try {
-            if (ATSDK.isCnSDK()) {
-                mInterstitialAd.setAdDownloadListener(new ATAppDownloadListener() {
-                    @Override
-                    public void onDownloadStart(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("interstitial onDownloadStart: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadStartKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadUpdate(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("interstitial onDownloadUpdate: " + mPlacementId);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadUpdateKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadPause(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("interstitial onDownloadPause: " + mPlacementId);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadPauseKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadFinish(ATAdInfo atAdInfo, long totalBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("interstitial onDownloadFinish: " + mPlacementId + ", " + totalBytes + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFinishedKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, -1, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadFail(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("interstitial onDownloadFail: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFailedKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onInstalled(ATAdInfo atAdInfo, String fileName, String appName) {
-                        MsgTools.pirntMsg("interstitial onInstalled: " + mPlacementId + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadInstalledKey,
-                                mPlacementId, atAdInfo.toString(), -1, -1, fileName, appName);
-                    }
-                });
-            }
-        } catch (Throwable e) {
-        }
+        //download
+//        try {
+//            if (ATSDK.isCnSDK()) {
+//                mInterstitialAd.setAdDownloadListener(new ATAppDownloadListener() {
+//                    @Override
+//                    public void onDownloadStart(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("interstitial onDownloadStart: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadStartKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadUpdate(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("interstitial onDownloadUpdate: " + mPlacementId);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadUpdateKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadPause(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("interstitial onDownloadPause: " + mPlacementId);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadPauseKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadFinish(ATAdInfo atAdInfo, long totalBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("interstitial onDownloadFinish: " + mPlacementId + ", " + totalBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFinishedKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, -1, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadFail(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("interstitial onDownloadFail: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFailedKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onInstalled(ATAdInfo atAdInfo, String fileName, String appName) {
+//                        MsgTools.printMsg("interstitial onInstalled: " + mPlacementId + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadInstalledKey,
+//                                mPlacementId, atAdInfo.toString(), -1, -1, fileName, appName);
+//                    }
+//                });
+//            }
+//        } catch (Throwable e) {
+//        }
     }
 
     public void loadInterstitial(final String placementId, final Map<String, Object> settings) {
-        MsgTools.pirntMsg("loadInterstitial: " + placementId + ", settings: " + settings);
+        MsgTools.printMsg("loadInterstitial: " + placementId + ", settings: " + settings);
 
         if (mInterstitialAd == null) {
             initInterstitial(placementId);
@@ -188,7 +196,7 @@ public class ATInterstitialHelper {
                 if (settings.containsKey(Const.Interstitial.UseRewardedVideoAsInterstitialKey)) {
                     if ((boolean) settings.get(Const.Interstitial.UseRewardedVideoAsInterstitialKey)) {
 
-                        MsgTools.pirntMsg("loadInterstitial: " + placementId + ", is_use_rewarded_video_as_interstitial: " + true);
+                        MsgTools.printMsg("loadInterstitial: " + placementId + ", is_use_rewarded_video_as_interstitial: " + true);
                         settings.put("is_use_rewarded_video_as_interstitial", true);
                     }
                 }
@@ -201,7 +209,7 @@ public class ATInterstitialHelper {
                     int width = Utils.dip2px(mActivity, Double.parseDouble(map.get(Const.WIDTH).toString()));
                     int height = Utils.dip2px(mActivity, Double.parseDouble(map.get(Const.HEIGHT).toString()));
 
-                    MsgTools.pirntMsg("loadInterstitial: " + placementId + ", width: " + width + ", height: " + height);
+                    MsgTools.printMsg("loadInterstitial: " + placementId + ", width: " + width + ", height: " + height);
 
                     settings.put("key_width", width);
                     settings.put("key_height", height);
@@ -216,7 +224,7 @@ public class ATInterstitialHelper {
     }
 
     public void showInterstitialAd(final String scenario) {
-        MsgTools.pirntMsg("showInterstitialAd: " + mPlacementId + ", scenario: " + scenario);
+        MsgTools.printMsg("showInterstitialAd: " + mPlacementId + ", scenario: " + scenario);
 
         if (mInterstitialAd != null) {
             if (!TextUtils.isEmpty(scenario)) {
@@ -228,19 +236,19 @@ public class ATInterstitialHelper {
     }
 
     public boolean isAdReady() {
-        MsgTools.pirntMsg("interstitial isAdReady: " + mPlacementId);
+        MsgTools.printMsg("interstitial isAdReady: " + mPlacementId);
 
         boolean isReady = false;
         if (mInterstitialAd != null) {
             isReady = mInterstitialAd.isAdReady();
         }
 
-        MsgTools.pirntMsg("interstitial isAdReady: " + mPlacementId + ", " + isReady);
+        MsgTools.printMsg("interstitial isAdReady: " + mPlacementId + ", " + isReady);
         return isReady;
     }
 
     public Map<String, Object> checkAdStatus() {
-        MsgTools.pirntMsg("interstitial checkAdStatus: " + mPlacementId);
+        MsgTools.printMsg("interstitial checkAdStatus: " + mPlacementId);
 
         Map<String, Object> map = new HashMap<>(5);
 
@@ -267,7 +275,7 @@ public class ATInterstitialHelper {
     }
 
     public String checkValidAdCaches() {
-        MsgTools.pirntMsg("interstitial checkValidAdCaches: " + mPlacementId);
+        MsgTools.printMsg("interstitial checkValidAdCaches: " + mPlacementId);
 
         if (mInterstitialAd != null) {
             List<ATAdInfo> vaildAds = mInterstitialAd.checkValidAdCaches();

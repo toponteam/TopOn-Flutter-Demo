@@ -58,7 +58,7 @@ public class ATFlutterEventManager {
                         }
 
                     } catch (Throwable e) {
-                        MsgTools.pirntMsg("method call error: " + methodCall + ", " + e.getMessage());
+                        MsgTools.printMsg("method call error: " + methodCall + ", " + e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -175,6 +175,7 @@ public class ATFlutterEventManager {
     public void release() {
         if (mMethodChannel != null) {
             mMethodChannel.setMethodCallHandler(null);
+            mMethodChannel = null;
         }
     }
 

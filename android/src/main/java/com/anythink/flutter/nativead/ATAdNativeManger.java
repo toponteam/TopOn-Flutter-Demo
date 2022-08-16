@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.anythink.flutter.HandleAnyThinkMethod;
 import com.anythink.flutter.utils.Const;
-import com.anythink.flutter.utils.MsgTools;
 
 import org.json.JSONException;
 
@@ -64,6 +63,36 @@ public class ATAdNativeManger implements HandleAnyThinkMethod {
                     result.success(s);
                 } else {
                     result.success("");
+                }
+                break;
+
+            case "showNativeAd":
+                if (helper != null) {
+                    boolean isAdaptiveHeight = false;
+                    try {
+                        isAdaptiveHeight = (Boolean) methodCall.argument(Const.Native.isAdaptiveHeight);
+                    } catch (Throwable e) {
+                    }
+
+                    helper.showNativeAd(settingMap, null, isAdaptiveHeight);
+                }
+                break;
+            case "showSceneNativeAd":
+                if (helper != null) {
+                    String scenario = methodCall.argument(Const.SCENE_ID);
+
+                    boolean isAdaptiveHeight = false;
+                    try {
+                        isAdaptiveHeight = (Boolean) methodCall.argument(Const.Native.isAdaptiveHeight);
+                    } catch (Throwable e) {
+                    }
+
+                    helper.showNativeAd(settingMap, scenario, isAdaptiveHeight);
+                }
+
+            case "removeNativeAd":
+                if (helper != null) {
+                    helper.removeNativeAd();
                 }
                 break;
         }

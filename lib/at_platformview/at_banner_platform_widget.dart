@@ -18,6 +18,7 @@ class _PlatformBannerWidgetState extends State<PlatformBannerWidget> {
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
+        key: UniqueKey(),
         viewType: 'at_banner_platform_view',
         creationParams: <String, dynamic>{
           "placementID": widget.placementID,

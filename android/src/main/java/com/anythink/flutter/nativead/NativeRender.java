@@ -8,7 +8,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anythink.flutter.utils.MsgTools;
@@ -20,6 +19,7 @@ import com.anythink.nativead.unitgroup.api.CustomNativeAd;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class NativeRender implements ATNativeAdRenderer<CustomNativeAd> {
 
     Context mContext;
@@ -49,18 +49,15 @@ public class NativeRender implements ATNativeAdRenderer<CustomNativeAd> {
         TextView ctaView = new TextView(mContext);
 
         final View mediaView = ad.getAdMediaView(mDevelopView, view.getWidth());
+
+        MsgTools.printMsg("isNativeExpress---->" + ad.isNativeExpress());
         if (mediaView != null && ad.isNativeExpress()) { // Template View
-            MsgTools.pirntMsg("里1: " +  ad.isNativeExpress());
 
             if (mDislikeView != null) {
                 mDislikeView.setVisibility(View.GONE);
-                MsgTools.pirntMsg("里2: " +  ad.isNativeExpress());
-
             }
-            MsgTools.pirntMsg("里3: " +  ad.isNativeExpress());
 
             if (mViewInfo.imgMainView != null && mViewInfo.rootView != null) {
-                MsgTools.pirntMsg("里4: " +  ad.isNativeExpress());
 
                 mViewInfo.imgMainView.mX = 0;
                 mViewInfo.imgMainView.mY = 0;
@@ -71,7 +68,6 @@ public class NativeRender implements ATNativeAdRenderer<CustomNativeAd> {
                 return;
             }
         }
-        MsgTools.pirntMsg("外: " +  ad.isNativeExpress());
 
         if (mViewInfo.rootView != null) {
             if (mViewInfo.rootView.mWidth != 0 && mViewInfo.rootView.mHeight != 0) {
@@ -118,7 +114,7 @@ public class NativeRender implements ATNativeAdRenderer<CustomNativeAd> {
             if (mViewInfo.descView.textSize > 0) {
                 descView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mViewInfo.descView.textSize);
             }
-            MsgTools.pirntMsg("desc---->" + ad.getDescriptionText());
+            MsgTools.printMsg("desc---->" + ad.getDescriptionText());
             descView.setText(ad.getDescriptionText());
 
 
@@ -181,13 +177,13 @@ public class NativeRender implements ATNativeAdRenderer<CustomNativeAd> {
 
         if (mediaView != null) {
 //            mediaView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            MsgTools.pirntMsg("mediaView ---> 视屏播放 " + ad.getVideoUrl());
+            MsgTools.printMsg("mediaView ---> 视屏播放 " + ad.getVideoUrl());
             if (mViewInfo.imgMainView != null) {
                 ViewInfo.add2ParentView(mDevelopView, mediaView, mViewInfo.imgMainView, -1);
             }
         } else {
             //加载大图
-            MsgTools.pirntMsg("mediaView ---> 大图播放");
+            MsgTools.printMsg("mediaView ---> 大图播放");
             final ATNativeImageView mainImageView = new ATNativeImageView(mContext);
             if (mViewInfo.imgMainView != null) {
                 ViewInfo.add2ParentView(mDevelopView, mainImageView, mViewInfo.imgMainView, -1);
@@ -212,7 +208,7 @@ public class NativeRender implements ATNativeAdRenderer<CustomNativeAd> {
         }
 
         if (mNetworkFirmId == 2) {
-            MsgTools.pirntMsg("start to add admob ad textview ");
+            MsgTools.printMsg("start to add admob ad textview ");
             TextView adLogoView = new TextView(mContext);
             adLogoView.setTextColor(Color.WHITE);
             adLogoView.setText("AD");
@@ -225,7 +221,7 @@ public class NativeRender implements ATNativeAdRenderer<CustomNativeAd> {
                 layoutParams.topMargin = Utils.dip2px(mContext, 3);
                 mDevelopView.addView(adLogoView, layoutParams);
 
-                MsgTools.pirntMsg("add admob ad textview 2 activity");
+                MsgTools.printMsg("add admob ad textview 2 activity");
             }
         }
 
@@ -254,7 +250,7 @@ public class NativeRender implements ATNativeAdRenderer<CustomNativeAd> {
         //dislike
 
         if (mDislikeView != null) {
-            MsgTools.pirntMsg("bind dislike ----> " + mNetworkFirmId);
+            MsgTools.printMsg("bind dislike ----> " + mNetworkFirmId);
 
             mDislikeView.setVisibility(View.VISIBLE);
 
@@ -290,7 +286,9 @@ public class NativeRender implements ATNativeAdRenderer<CustomNativeAd> {
                 return;
             }
         }
-        clickViews.add(view);
+        if (view != null) {
+            clickViews.add(view);
+        }
     }
 
 

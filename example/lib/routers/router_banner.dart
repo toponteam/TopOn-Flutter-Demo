@@ -23,7 +23,8 @@ class _BannerRouterState extends State<BannerRouter> {
 
   _checkReadyToShow() {
     ATBannerManager.bannerAdReady(
-      placementID: Configuration.bannerPlacementID,
+
+        placementID: Configuration.bannerPlacementID,
     ).then((value) {
 
       if (value) {
@@ -38,7 +39,11 @@ class _BannerRouterState extends State<BannerRouter> {
 
     });
   }
-
+  _remove() {
+    setState(() {
+      flag = false;
+    });
+  }
 
   _getBannerView() {
     if (!flag) {
@@ -83,20 +88,19 @@ class _BannerRouterState extends State<BannerRouter> {
                           ))),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.white70),
-                      onPressed: _checkReadyToShow,
+                      // onPressed: _checkReadyToShow,
+                      onPressed: BannerManager.showAdInPosition,
                       child: Text("Show",
                           style: TextStyle(
                             color: Colors.black,
                           ))),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.white70),
-                      onPressed: () {
-                        setState(() {
-                          flag = false;
-                        });
-                      },
+                      onPressed: BannerManager.removeBannerAd,
+                      // onPressed: _remove,
                       child: Text("Remove",
                           style: TextStyle(
+
                             color: Colors.black,
                           ))),
                   ElevatedButton(
@@ -110,13 +114,13 @@ class _BannerRouterState extends State<BannerRouter> {
                 ],
               ),
             ),
-            Expanded(
-                flex: 1,
-                child: Container(
-                  margin: EdgeInsets.only(top: 20),
-                  padding: EdgeInsets.only(top: 50),
-                  child: _getBannerView(),
-                ))
+          //   Expanded(
+          //       flex: 1,
+          //       child: Container(
+          //         margin: EdgeInsets.only(top: 20),
+          //         padding: EdgeInsets.only(top: 50),
+          //         child: _getBannerView(),
+          //       ))
           ],
         ),
       ),

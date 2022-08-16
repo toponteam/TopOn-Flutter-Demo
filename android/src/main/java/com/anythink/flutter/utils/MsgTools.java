@@ -7,7 +7,7 @@ public class MsgTools {
     public static final String TAG = "ATFlutterBridge";
     public static boolean isDebug = true;
 
-    public static void pirntMsg(String msg) {
+    public static void printMsg(String msg) {
         if (isDebug) {
             Log.e(TAG, msg);
         }

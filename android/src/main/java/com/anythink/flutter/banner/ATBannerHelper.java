@@ -1,14 +1,21 @@
 package com.anythink.flutter.banner;
 
 import android.app.Activity;
+import android.content.Context;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 
 import com.anythink.banner.api.ATBannerExListener;
 import com.anythink.banner.api.ATBannerView;
-import com.anythink.china.api.ATAppDownloadListener;
+//import com.anythink.china.api.ATAppDownloadListener;
 import com.anythink.core.api.ATAdInfo;
 import com.anythink.core.api.ATAdStatusInfo;
-import com.anythink.core.api.ATSDK;
+import com.anythink.core.api.ATNetworkConfirmInfo;
+//import com.anythink.core.api.ATSDK;
 import com.anythink.core.api.AdError;
 import com.anythink.flutter.ATFlutterEventManager;
 import com.anythink.flutter.AnythinkSdkPlugin;
@@ -41,7 +48,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
         mBannerView.setBannerAdListener(new ATBannerExListener() {
             @Override
             public void onDeeplinkCallback(boolean isRefresh, ATAdInfo atAdInfo, boolean isSuccess) {
-                MsgTools.pirntMsg("banner onDeeplinkCallback: " + mPlacementId);
+                MsgTools.printMsg("banner onDeeplinkCallback: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.BannerCall, Const.BannerCallback.DeeplinkCallbackKey,
@@ -49,8 +56,13 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
             }
 
             @Override
+            public void onDownloadConfirm(Context context, ATAdInfo atAdInfo, ATNetworkConfirmInfo atNetworkConfirmInfo) {
+                MsgTools.printMsg("banner onDownloadConfirm: " + mPlacementId);
+            }
+
+            @Override
             public void onBannerLoaded() {
-                MsgTools.pirntMsg("onBannerLoaded: " + mPlacementId);
+                MsgTools.printMsg("onBannerLoaded: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.BannerCall, Const.BannerCallback.LoadedCallbackKey,
@@ -59,7 +71,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onBannerFailed(AdError adError) {
-                MsgTools.pirntMsg("onBannerFailed: " + mPlacementId + ", " + adError.getFullErrorInfo());
+                MsgTools.printMsg("onBannerFailed: " + mPlacementId + ", " + adError.getFullErrorInfo());
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.BannerCall, Const.BannerCallback.LoadFailCallbackKey,
@@ -68,7 +80,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onBannerClicked(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onBannerClicked: " + mPlacementId);
+                MsgTools.printMsg("onBannerClicked: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.BannerCall, Const.BannerCallback.ClickCallbackKey,
@@ -77,7 +89,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onBannerShow(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onBannerShow: " + mPlacementId);
+                MsgTools.printMsg("onBannerShow: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.BannerCall, Const.BannerCallback.ShowCallbackKey,
@@ -86,7 +98,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onBannerClose(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onBannerClose: " + mPlacementId);
+                MsgTools.printMsg("onBannerClose: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.BannerCall, Const.BannerCallback.CloseCallbackKey,
@@ -95,7 +107,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onBannerAutoRefreshed(ATAdInfo atAdInfo) {
-                MsgTools.pirntMsg("onBannerAutoRefreshed: " + mPlacementId);
+                MsgTools.printMsg("onBannerAutoRefreshed: " + mPlacementId);
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.BannerCall, Const.BannerCallback.RefreshCallbackKey,
@@ -104,7 +116,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
 
             @Override
             public void onBannerAutoRefreshFail(AdError adError) {
-                MsgTools.pirntMsg("onBannerAutoRefreshFail: " + mPlacementId + ", " + adError.getFullErrorInfo());
+                MsgTools.printMsg("onBannerAutoRefreshFail: " + mPlacementId + ", " + adError.getFullErrorInfo());
 
                 ATFlutterEventManager.getInstance().sendCallbackMsgToFlutter(
                         Const.CallbackMethodCall.BannerCall, Const.BannerCallback.RefreshFailCallbackKey,
@@ -112,64 +124,65 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
             }
         });
 
-        try {
-            if (ATSDK.isCnSDK()) {
-                mBannerView.setAdDownloadListener(new ATAppDownloadListener() {
-                    @Override
-                    public void onDownloadStart(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("banner onDownloadStart: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadStartKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadUpdate(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("banner onDownloadUpdate: " + mPlacementId);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadUpdateKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadPause(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("banner onDownloadPause: " + mPlacementId);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadPauseKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadFinish(ATAdInfo atAdInfo, long totalBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("banner onDownloadFinish: " + mPlacementId + ", " + totalBytes + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFinishedKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, -1, fileName, appName);
-                    }
-
-                    @Override
-                    public void onDownloadFail(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
-                        MsgTools.pirntMsg("banner onDownloadFail: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFailedKey,
-                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
-                    }
-
-                    @Override
-                    public void onInstalled(ATAdInfo atAdInfo, String fileName, String appName) {
-                        MsgTools.pirntMsg("banner onInstalled: " + mPlacementId + ", " + fileName + ", " + appName);
-
-                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadInstalledKey,
-                                mPlacementId, atAdInfo.toString(), -1, -1, fileName, appName);
-                    }
-                });
-            }
-        } catch (Throwable e) {
-        }
+        //download
+//        try {
+//            if (ATSDK.isCnSDK()) {
+//                mBannerView.setAdDownloadListener(new ATAppDownloadListener() {
+//                    @Override
+//                    public void onDownloadStart(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("banner onDownloadStart: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadStartKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadUpdate(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("banner onDownloadUpdate: " + mPlacementId);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadUpdateKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadPause(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("banner onDownloadPause: " + mPlacementId);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadPauseKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadFinish(ATAdInfo atAdInfo, long totalBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("banner onDownloadFinish: " + mPlacementId + ", " + totalBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFinishedKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, -1, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onDownloadFail(ATAdInfo atAdInfo, long totalBytes, long currBytes, String fileName, String appName) {
+//                        MsgTools.printMsg("banner onDownloadFail: " + mPlacementId + ", " + totalBytes + ", " + currBytes + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadFailedKey,
+//                                mPlacementId, atAdInfo.toString(), totalBytes, currBytes, fileName, appName);
+//                    }
+//
+//                    @Override
+//                    public void onInstalled(ATAdInfo atAdInfo, String fileName, String appName) {
+//                        MsgTools.printMsg("banner onInstalled: " + mPlacementId + ", " + fileName + ", " + appName);
+//
+//                        ATFlutterEventManager.getInstance().sendDownloadMsgToFlutter(Const.CallbackMethodCall.DownloadCall, Const.DownloadCallCallback.DownloadInstalledKey,
+//                                mPlacementId, atAdInfo.toString(), -1, -1, fileName, appName);
+//                    }
+//                });
+//            }
+//        } catch (Throwable e) {
+//        }
     }
 
     public void loadBanner(final String placementId, final Map<String, Object> settings) {
-        MsgTools.pirntMsg("loadBanner: " + placementId + ", settings: " + settings);
+        MsgTools.printMsg("loadBanner: " + placementId + ", settings: " + settings);
 
         FlutterPluginUtil.runOnUiThread(new Runnable() {
             @Override
@@ -193,7 +206,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
                                 mBannerView.getLayoutParams().height = height;
                             }
 
-                            MsgTools.pirntMsg("loadBanner: " + mPlacementId + ", width: " + width + ", height: " + height);
+                            MsgTools.printMsg("loadBanner: " + mPlacementId + ", width: " + width + ", height: " + height);
 
                             settings.put("key_width", width);
                             settings.put("key_height", height);
@@ -206,7 +219,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
                         Object adaptiveWidthObject = settings.get(Const.Banner.adaptiveWidth);
                         if (adaptiveWidthObject != null) {
                             int width = Utils.dip2px(mActivity, Double.parseDouble(adaptiveWidthObject.toString()));
-                            MsgTools.pirntMsg("loadBanner: " + mPlacementId + ", adaptiveWidth: " + width);
+                            MsgTools.printMsg("loadBanner: " + mPlacementId + ", adaptiveWidth: " + width);
                             settings.put("adaptive_width", width);
                         }
                     } catch (Throwable e) {
@@ -216,7 +229,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
                         Object adaptiveOrientationObject = settings.get(Const.Banner.adaptiveOrientation);
                         if (adaptiveOrientationObject != null) {
                             int orientation = Utils.dip2px(mActivity, Integer.parseInt(adaptiveOrientationObject.toString()));
-                            MsgTools.pirntMsg("loadBanner: " + mPlacementId + ", adaptiveOrientation: " + orientation);
+                            MsgTools.printMsg("loadBanner: " + mPlacementId + ", adaptiveOrientation: " + orientation);
                             settings.put("adaptive_orientation", orientation);
                         }
                     } catch (Throwable e) {
@@ -233,7 +246,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
 
 
     public boolean isAdReady() {
-        MsgTools.pirntMsg("banner isAdReady: " + mPlacementId);
+        MsgTools.printMsg("banner isAdReady: " + mPlacementId);
 
         boolean isReady = false;
         if (mBannerView != null) {
@@ -242,12 +255,12 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
                 isReady = atAdStatusInfo.isReady();
             }
         }
-        MsgTools.pirntMsg("banner isAdReady: " + mPlacementId + ", " + isReady);
+        MsgTools.printMsg("banner isAdReady: " + mPlacementId + ", " + isReady);
         return isReady;
     }
 
     public Map<String, Object> checkAdStatus() {
-        MsgTools.pirntMsg("banner checkAdStatus: " + mPlacementId);
+        MsgTools.printMsg("banner checkAdStatus: " + mPlacementId);
 
         Map<String, Object> map = new HashMap<>(5);
 
@@ -274,7 +287,7 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
     }
 
     public String checkValidAdCaches() {
-        MsgTools.pirntMsg("banner checkValidAdCaches: " + mPlacementId);
+        MsgTools.printMsg("banner checkValidAdCaches: " + mPlacementId);
 
         if (mBannerView != null) {
             List<ATAdInfo> vaildAds = mBannerView.checkValidAdCaches();
@@ -301,4 +314,123 @@ public class ATBannerHelper extends AnythinkSdkPlugin {
     public ATBannerView getBannerView() {
         return mBannerView;
     }
+
+
+
+    public void showBannerWithRect(final Map<String, Object> settings, final String scenario) {
+        MsgTools.printMsg("showBannerWithRect: " + mPlacementId + ", scenario: " + scenario);
+
+        if (mBannerView != null) {
+
+            int x = 0;
+            int y = 0;
+            int width = 0;
+            int height = 0;
+
+            if (settings != null) {
+                Map<String, Object> size = (Map<String, Object>) settings.get(Const.SIZE);
+
+                x = (int) size.get(Const.X);
+                y = (int) size.get(Const.Y);
+                width = (int) size.get(Const.WIDTH);
+                height = (int) size.get(Const.HEIGHT);
+            }
+
+            final int finalX = x;
+            final int finalY = y;
+            final double finalWidth = width;
+            final double finalHeight = height;
+            FlutterPluginUtil.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams((int) finalWidth, (int) finalHeight);
+                    layoutParams.leftMargin = (int) finalX;
+                    layoutParams.topMargin = (int) finalY;
+                    if (mBannerView.getParent() != null) {
+                        ((ViewGroup) mBannerView.getParent()).removeView(mBannerView);
+                    }
+                    if (!TextUtils.isEmpty(scenario)) {
+                        mBannerView.setScenario(scenario);
+                    }
+
+                    mActivity.addContentView(mBannerView, layoutParams);
+                }
+            });
+        }
+    }
+
+    public void showBannerWithPosition(final String position, final String scenario) {
+        MsgTools.printMsg("showBannerWithPosition: " + mPlacementId + ", scenario: " + scenario);
+
+        FlutterPluginUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mBannerView != null) {
+                    int width = mBannerView.getLayoutParams().width;
+                    int height = mBannerView.getLayoutParams().height;
+                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
+                    if (position.equals(Const.POSITION_TOP)) {
+                        layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+                    } else {
+                        layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
+                    }
+
+                    if (!TextUtils.isEmpty(scenario)) {
+                        mBannerView.setScenario(scenario);
+                    }
+
+                    mActivity.addContentView(mBannerView, layoutParams);
+                }
+            }
+        });
+    }
+
+    public void reshowBanner() {
+        MsgTools.printMsg("reshowBanner: " + mPlacementId);
+
+        FlutterPluginUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mBannerView != null) {
+                    mBannerView.setVisibility(View.VISIBLE);
+                } else {
+                    MsgTools.printMsg("reshowBanner error, you must call loadBanner first, placementId: " + mPlacementId);
+                }
+            }
+        });
+    }
+
+    public void hideBanner() {
+        MsgTools.printMsg("hideBanner: " + mPlacementId);
+
+        FlutterPluginUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mBannerView != null) {
+                    mBannerView.setVisibility(View.GONE);
+                } else {
+                    MsgTools.printMsg("hideBanner error, you must call loadBanner first, placementId: " + mPlacementId);
+                }
+            }
+        });
+    }
+
+    public void removeBanner() {
+        MsgTools.printMsg("removeBanner: " + mPlacementId);
+
+        FlutterPluginUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mBannerView != null) {
+                    if (mBannerView.getParent() != null) {
+                        ViewParent viewParent = mBannerView.getParent();
+                        ((ViewGroup) viewParent).removeView(mBannerView);
+                    }
+                } else {
+                    MsgTools.printMsg("removeBanner error, you must call loadBanner first, placementId: " + mPlacementId);
+                }
+            }
+        });
+    }
+
 }

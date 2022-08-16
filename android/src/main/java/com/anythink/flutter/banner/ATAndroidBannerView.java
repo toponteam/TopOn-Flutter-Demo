@@ -23,10 +23,10 @@ public class ATAndroidBannerView implements PlatformView {
             String placementID = (String) args.get(Const.PlatformViewKeys.PlacementID);
             String scenario = (String) args.get(Const.PlatformViewKeys.SceneID);
 
-            MsgTools.pirntMsg("ATAndroidBannerView: " + placementID + ", scenario: " + scenario);
+            MsgTools.printMsg("ATAndroidBannerView: " + placementID + ", scenario: " + scenario);
 
             if (TextUtils.isEmpty(placementID)) {
-                MsgTools.pirntMsg("ATAndroidBannerView: placementId = null");
+                MsgTools.printMsg("ATAndroidBannerView: placementId = null");
                 return;
             }
 

@@ -80,7 +80,7 @@ class InitTool{
 
     await ATInitManger.setDataConsentSet(
         gdprLevel:
-    ATInitManger.dataConsentSetNonpersonalized()).then((value) {
+    ATInitManger.dataConsentSetPersonalized()).then((value) {
       print('flutter: Set up GDPR${value.toString()}');
     });
   }

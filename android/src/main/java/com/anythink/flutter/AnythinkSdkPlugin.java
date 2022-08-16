@@ -2,8 +2,6 @@ package com.anythink.flutter;
 
 import androidx.annotation.NonNull;
 
-import com.anythink.flutter.banner.ATBannerViewFactory;
-import com.anythink.flutter.nativead.ATNativeViewFactory;
 import com.anythink.flutter.utils.FlutterPluginUtil;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
