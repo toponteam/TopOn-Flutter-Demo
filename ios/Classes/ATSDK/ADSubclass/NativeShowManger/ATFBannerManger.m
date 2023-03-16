@@ -19,19 +19,19 @@
 
 @interface ATFBannerManger()
 
-//@property (nonatomic,strong) NSMutableDictionary *rectDic;
-//
-//@property (nonatomic,strong) NSMutableDictionary *bannerViewDic;
-//
-//
-//@property(nonatomic, strong) ATFBannerDelegate *bannerDelegate;
+@property (nonatomic,strong) NSMutableDictionary *rectDic;
+
+@property (nonatomic,strong) NSMutableDictionary *bannerViewDic;
+
+
+@property(nonatomic, strong) ATFBannerDelegate *bannerDelegate;
 
 
 
 @end
 
 @implementation ATFBannerManger
-/*
+
 #pragma mark - publice
 /// 加载横幅广告
 - (void)loadBannerWith:(NSString *)placementID extraDic:(NSDictionary *)extraDic{
@@ -44,47 +44,37 @@
     [[ATAdManager sharedManager] loadADWithPlacementID:placementID extra:@{kATAdLoadingExtraBannerAdSizeKey:[NSValue valueWithCGSize:CGSizeMake(rect.size.width,  rect.size.height)]} delegate:self.bannerDelegate];
     
 
-    
-    // 针对Admob平台，支持Admob banner广告自适应
-    
-    //GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth 自适应
-    //GADPortraitAnchoredAdaptiveBannerAdSizeWithWidth 竖屏
-    //GADLandscapeAnchoredAdaptiveBannerAdSizeWithWidth 横屏
-    
-//    GADAdSize admobSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(CGRectGetWidth(self.view.bounds));
-    
-//    [[ATAdManager sharedManager] loadADWithPlacementID:placementID extra:@{
-//        kATAdLoadingExtraBannerAdSizeKey:[NSValue valueWithCGSize:CGSizeMake(rect.size.width,  rect.size.height)],
-//        kATAdLoadingExtraBannerSizeAdjustKey:@NO,
-//        kATAdLoadingExtraAdmobBannerSizeKey:[NSValue valueWithCGSize:admobSize.size],
-//        kATAdLoadingExtraAdmobAdSizeFlagsKey:@(admobSize.flags)
-//
-//    } delegate:self];
+    //    if (extraDic[kATBannerAdLoadingExtraInlineAdaptiveWidthKey] != nil && extraDic[kATBannerAdLoadingExtraInlineAdaptiveOrientationKey] != nil) {
+            // admob 自适应banner，5.6.6版本以上支持 针对Admob平台，支持Admob banner广告自适应
+            //GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth 自适应
+            //GADPortraitAnchoredAdaptiveBannerAdSizeWithWidth 竖屏
+            //GADLandscapeAnchoredAdaptiveBannerAdSizeWithWidth 横屏
+    //        CGFloat admobBannerWidth = [extraDic[kATBannerAdLoadingExtraInlineAdaptiveWidthKey] doubleValue];
+    //        GADAdSize admobSize;
+    //        if ([extraDic[kATBannerAdLoadingExtraInlineAdaptiveOrientationKey] integerValue] == 1) {
+    //            admobSize = GADPortraitAnchoredAdaptiveBannerAdSizeWithWidth(admobBannerWidth);
+    //        } else if ([extraDic[kATBannerAdLoadingExtraInlineAdaptiveOrientationKey] integerValue] == 2) {
+    //
+    //            admobSize = GADLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(admobBannerWidth);
+    //        } else {
+    //            admobSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(admobBannerWidth);
+    //        }
+            
+    //        [[ATAdManager sharedManager] loadADWithPlacementID:placementID extra:@{
+    //
+    //            kATAdLoadingExtraBannerAdSizeKey:[NSValue valueWithCGSize:CGSizeMake(rect.size.width,  rect.size.height)],
+    //
+    //            kATAdLoadingExtraBannerSizeAdjustKey:@NO,
+    //
+    //            kATAdLoadingExtraAdmobBannerSizeKey:[NSValue valueWithCGSize:admobSize.size],
+    //            kATAdLoadingExtraAdmobAdSizeFlagsKey:@(admobSize.flags)
+    //
+    //        } delegate:self];
+    //    }
     
 }
 
-/// 横幅广告是否准备好
-- (BOOL)bannerAdReady:(NSString *)placementID{
-    
-    BOOL isReady =[[ATAdManager sharedManager] bannerAdReadyForPlacementID:placementID];
-    return  isReady;
-}
 
-/// 获取当前广告位下所有可用广告的信息
-- (NSString *)getBannerValidAds:(NSString *)placementID{
-    
-    NSArray *array = [[ATAdManager sharedManager] getBannerValidAdsForPlacementID:placementID];
-      NSString *str = [ATFCommonTool toReadableJSONString:array];
-      return str;
-}
-
-/// 获取广告位的状态
-- (NSString *)checkBannerLoadStatus:(NSString *)placementID{
-    
-    ATCheckLoadModel *model = [[ATAdManager sharedManager] checkBannerLoadStatusForPlacementID:placementID];
-    NSString *statusStr = [ATFCommonTool objectToJSONString:model];
-    return  statusStr;
-}
 
 /// 用位置和宽高属性来展示横幅广告
 - (void)showBannerInRectangle:(NSString *)placementID extraDic:(NSDictionary *) extraDic{
@@ -118,7 +108,7 @@
     CGRect loadRect =  CGRectFromString(self.rectDic[placementID]);
     
     
-    CGRect rect = [self getInPositionFromloadRect:loadRect positionStr:placementID];
+    CGRect rect = [self getInPositionFromloadRect:loadRect positionStr:positionStr];
     
     ATFLog(@"自定义横幅位置:%@",NSStringFromCGRect(rect));
         
@@ -132,7 +122,7 @@
 - (void)showAdInPosition:(NSString *)placementID sceneID:(NSString *)sceneID position:(NSString *) positionStr{
     
     CGRect loadRect =  CGRectFromString(self.rectDic[placementID]);
-    CGRect rect = [self getInPositionFromloadRect:loadRect positionStr:placementID];
+    CGRect rect = [self getInPositionFromloadRect:loadRect positionStr:positionStr];
     ATFLog(@"自定义场景横幅位置:%@",NSStringFromCGRect(rect));
     ATBannerView *bannerView = [ATFBannerTool getBannerViewAdRect:rect placementID:placementID sceneID:sceneID];
     [self setBannerViewVlaue:bannerView placementID:placementID];
@@ -242,6 +232,6 @@
     return _bannerDelegate = bannerDelegate;
 }
 
-*/
+
 
 @end

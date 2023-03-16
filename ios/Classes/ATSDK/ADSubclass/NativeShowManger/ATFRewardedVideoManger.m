@@ -6,11 +6,11 @@
 //
 
 #import "ATFRewardedVideoManger.h"
-#import <AnyThinkSDK/AnyThinkSDK.h>
+//#import <AnyThinkSDK/AnyThinkSDK.h>
 #import <AnyThinkRewardedVideo/AnyThinkRewardedVideo.h>
 #import "ATFCommonTool.h"
 #import "ATFRewardedVideoDelegate.h"
-#define kATAdLoadingExtraUserData  @"kATAdLoadingExtraUserDataKeywordKey"
+#define kATAdLoadingExtraUserData  @"kATAdLoadingExtraMediaExtraKey"
 #define kATAdLoadingExtraUserID  @"kATAdLoadingExtraUserIDKey"
 
 @interface ATFRewardedVideoManger()
@@ -33,7 +33,7 @@
     
     if ([extraDic.allKeys containsObject:kATAdLoadingExtraUserData]) {
         [dic removeObjectForKey:kATAdLoadingExtraUserData];
-        dic[kATAdLoadingExtraUserDataKeywordKey] = extraDic[kATAdLoadingExtraUserData];
+        dic[kATAdLoadingExtraMediaExtraKey] = extraDic[kATAdLoadingExtraUserData];
     }
     if ([extraDic.allKeys containsObject:kATAdLoadingExtraUserID]) {
         [dic removeObjectForKey:kATAdLoadingExtraUserID];

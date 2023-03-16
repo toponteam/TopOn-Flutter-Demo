@@ -9,7 +9,7 @@ class RewarderTool{
     await ATRewardedManager.loadRewardedVideo(
         placementID: Configuration.rewarderPlacementID,
         extraMap: {
-          ATRewardedManager.kATAdLoadingExtraUserDataKeywordKey(): '1234',
+          ATRewardedManager.kATAdLoadingExtraMediaExtraKey(): '1234',
           ATRewardedManager.kATAdLoadingExtraUserIDKey(): '1234',
         }).then((value) {
       print('flutter Rewarded video loading video end');

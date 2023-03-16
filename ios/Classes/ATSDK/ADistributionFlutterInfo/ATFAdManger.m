@@ -105,7 +105,7 @@
 
 - (NSArray *)funcNativeNameArray{
     if (_funcNativeNameArray == nil) {
-        _funcNativeNameArray = @[NativeAdReady,CheckNativeAdLoadStatus,GetNativeValidAds,LoadNativeAd,ShowNativeAd,ShowSceneNativeAd];
+        _funcNativeNameArray = @[NativeAdReady,CheckNativeAdLoadStatus,GetNativeValidAds,LoadNativeAd,ShowNativeAd,ShowSceneNativeAd,RemoveNativeAd];
     }
     return _funcNativeNameArray;
 }

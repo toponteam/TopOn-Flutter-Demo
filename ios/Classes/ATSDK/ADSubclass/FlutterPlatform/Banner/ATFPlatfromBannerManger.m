@@ -65,29 +65,6 @@ static NSString *kATBannerAdLoadingExtraInlineAdaptiveOrientationKey = @"adaptiv
 //    }
 }
 
-/// 横幅广告是否准备好
-- (BOOL)bannerAdReady:(NSString *)placementID{
-    
-    BOOL isReady =[[ATAdManager sharedManager] bannerAdReadyForPlacementID:placementID];
-    return  isReady;
-}
-
-/// 获取当前广告位下所有可用广告的信息
-- (NSString *)getBannerValidAds:(NSString *)placementID{
-    
-    NSArray *array = [[ATAdManager sharedManager] getBannerValidAdsForPlacementID:placementID];
-      NSString *str = [ATFCommonTool toReadableJSONString:array];
-      return str;
-}
-
-/// 获取广告位的状态
-- (NSDictionary *)checkBannerLoadStatus:(NSString *)placementID{
-    
-    ATCheckLoadModel *model = [[ATAdManager sharedManager] checkBannerLoadStatusForPlacementID:placementID];
-    
-    NSDictionary *dic = [ATFCommonTool objectToJSONString:model];
-    return  dic;
-}
 
 
 #pragma mark - lazy

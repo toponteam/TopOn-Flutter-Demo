@@ -128,6 +128,8 @@
 
 #define ShowSceneNativeAd @"showSceneNativeAd"
 
+#define RemoveNativeAd @"removeNativeAd"
+
 #pragma mark - 原生广告相关
 #define NativeSize @"size"
 
@@ -141,6 +143,7 @@
 #define Dislike @"dislike"
 
 
+#define IsAdaptiveHeight @"isAdaptiveHeight"
 
 #pragma mark - 屏幕相关
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)

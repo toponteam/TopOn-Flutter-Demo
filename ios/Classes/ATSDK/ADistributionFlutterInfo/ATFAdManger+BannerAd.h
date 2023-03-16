@@ -10,7 +10,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ATFAdManger (BannerAd)
-
+extern NSString * const kATBannerPresentModalViewControllerNotification;
+extern NSString * const kATBannerNotificationUserInfoRequestIDKey;
+extern NSString * const kATBannerDismissModalViewControllerNotification;
 
 - (void)bannerAdFlutterInformation:(FlutterMethodCall*)call result:(FlutterResult)result;
 

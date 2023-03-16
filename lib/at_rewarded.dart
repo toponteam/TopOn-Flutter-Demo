@@ -21,8 +21,8 @@ class ATRewarded{
     });
   }
 
-  String kATAdLoadingExtraUserDataKeywordKey(){
-    return 'kATAdLoadingExtraUserDataKeywordKey';
+  String kATAdLoadingExtraMediaExtraKey(){
+    return 'kATAdLoadingExtraMediaExtraKey';
   }
   String kATAdLoadingExtraUserIDKey(){
     return 'kATAdLoadingExtraUserIDKey';

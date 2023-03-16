@@ -88,8 +88,8 @@ class _BannerRouterState extends State<BannerRouter> {
                           ))),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.white70),
-                      // onPressed: _checkReadyToShow,
-                      onPressed: BannerManager.showAdInPosition,
+                      onPressed: _checkReadyToShow,
+                      // onPressed: BannerManager.showAdInPosition,
                       child: Text("Show",
                           style: TextStyle(
                             color: Colors.black,
@@ -114,13 +114,13 @@ class _BannerRouterState extends State<BannerRouter> {
                 ],
               ),
             ),
-          //   Expanded(
-          //       flex: 1,
-          //       child: Container(
-          //         margin: EdgeInsets.only(top: 20),
-          //         padding: EdgeInsets.only(top: 50),
-          //         child: _getBannerView(),
-          //       ))
+            Expanded(
+                flex: 1,
+                child: Container(
+                  margin: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.only(top: 50),
+                  child: _getBannerView(),
+                ))
           ],
         ),
       ),

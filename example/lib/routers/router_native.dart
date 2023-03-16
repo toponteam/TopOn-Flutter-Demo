@@ -126,8 +126,8 @@ class _NativeRouterState extends State<NativeRouter> {
                           ))),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.white70),
-                      onPressed: NativeManager.showNative,
-                      // onPressed: _checkReadyToShow,
+                      // onPressed: NativeManager.showNative,
+                      onPressed: _checkReadyToShow,
                       child: Text("Show",
                           style: TextStyle(
                             color: Colors.black,
@@ -151,15 +151,15 @@ class _NativeRouterState extends State<NativeRouter> {
                 ],
               ),
             ),
-          //   Expanded(
-          //       flex: 1,
-          //       child: Container(
-          //         // height: 100,
-          //         // width: 200,
-          //         // color: Colors.deepPurple,
-          //         margin: EdgeInsets.only(top: 20),
-          //         child: _getNativeView(),
-          //       ))
+            Expanded(
+                flex: 1,
+                child: Container(
+                  height: 1000,
+                  width: 800,
+                  color: Colors.deepPurple,
+                  margin: EdgeInsets.only(top: 100),
+                  child: _getNativeView(),
+                ))
           ],
         ),
       ),

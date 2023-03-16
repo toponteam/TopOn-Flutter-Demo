@@ -7,43 +7,57 @@
 
 #import "ATFAdManger+BannerAd.h"
 #import "ATFConfiguration.h"
-
+#import "ATFBannerTool.h"
+NSString *const kATBannerPresentModalViewControllerNotification = @"";
+NSString *const kATBannerNotificationUserInfoRequestIDKey = @"";
+NSString *const kATBannerDismissModalViewControllerNotification = @"";
 @implementation ATFAdManger (BannerAd)
 
 - (void)bannerAdFlutterInformation:(FlutterMethodCall*)call result:(FlutterResult)result{
     
     NSString *placementID = call.arguments[@"placementID"];
     NSDictionary *extraDic = call.arguments[@"extraDic"];
-//    NSString *sceneID = call.arguments[@"sceneID"];
-
+    NSString *sceneID = call.arguments[@"sceneID"];
+    
+    BOOL isNativeShowType = NO;
+    
+    if ([extraDic.allKeys containsObject:@"isNativeShowType"] && [extraDic[@"isNativeShowType"] boolValue] == YES) {
+        isNativeShowType = YES;
+    }
+    
     ATFLog(@"Banner ad slot:%@",placementID);
     // 加载横幅广告
     if ([LoadBannerAd isEqualToString:call.method]) {
         
-        [self.platfromBannerManger loadBannerWith:placementID extraDic:extraDic];
+        
+        if (isNativeShowType == NO) {
+            [self.platfromBannerManger loadBannerWith:placementID extraDic:extraDic];
+        }else{
+            [self.bannerManger loadBannerWith:placementID extraDic:extraDic];
+        }        
     }
     
     // 是否有广告缓存
     else if ([BannerAdReady isEqualToString:call.method]) {
         
-       BOOL isReady = [self.platfromBannerManger bannerAdReady:placementID];
+        
+        BOOL isReady = [ATFBannerTool bannerAdReady:placementID];
         result(@(isReady));
     }
     // 获取广告位的状态
     else if ([CheckBannerLoadStatus isEqualToString:call.method]) {
-        NSDictionary *dic = [self.platfromBannerManger checkBannerLoadStatus:placementID];
+        
+        NSDictionary *dic = [ATFBannerTool checkBannerLoadStatus:placementID];
+        
         result(dic);
     }
     
     // 获取当前广告位下所有可用广告的信息，v5.7.53及以上版本支持
     else if ([GetBannerValidAds isEqualToString:call.method]) {
         
-        NSString *str = [self.platfromBannerManger getBannerValidAds:placementID];
+        NSString *str = [ATFBannerTool getBannerValidAds:placementID];
         result(str);
     }
-    
-    
-    /*
 
     // 用位置和宽高属性来展示横幅广告
     else if ([ShowBannerInRectangle isEqualToString:call.method]) {
@@ -97,7 +111,7 @@
     }
     
     // 隐藏横幅广告
-    else if ([HideBannerAd isEqualToString:call.method]) {
+    else if ([HideBannerAd isEqualToString:call.method] ) {
          [self.bannerManger hideBannerAd:placementID];
     }
     
@@ -106,7 +120,7 @@
          [self.bannerManger afreshShowBannerAd:placementID];
     }
      
-     */
+     
     
 }
 
