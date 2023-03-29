@@ -8,11 +8,9 @@ class InterstitialTool {
     await ATInterstitialManager.loadInterstitialAd(
         placementID: Configuration.interstitialPlacementID,
         extraMap: {
-          ATCommon.getAdSizeKey(): ATInterstitialManager.createInterstitialSize(300, 300)
-          // , ATInterstitialManager.useRewardedVideoAsInterstitialKey(): false
-        }).then((value) {
-      print('flutter Interstitial ad loading ends');
-    });
+          // Sigmob rewarded video ----> Interstitial ads
+          // ATInterstitialManager.useRewardedVideoAsInterstitialKey(): true
+        });
   }
 
   interstitialAdcheck() async {
@@ -48,17 +46,13 @@ class InterstitialTool {
   showInterstitialAd() async {
     await ATInterstitialManager.showInterstitialAd(
       placementID: Configuration.interstitialPlacementID,
-    ).then((value) {
-      print('flutter showInterstitialAd: $value');
-    });
+    );
   }
 
   showSceneInterstitialAd() async {
     await ATInterstitialManager.showSceneInterstitialAd(
       placementID: Configuration.interstitialPlacementID,
       sceneID: Configuration.interstitialSceneID,
-    ).then((value) {
-      print('flutter showSceneInterstitialAd $value');
-    });
+    );
   }
 }

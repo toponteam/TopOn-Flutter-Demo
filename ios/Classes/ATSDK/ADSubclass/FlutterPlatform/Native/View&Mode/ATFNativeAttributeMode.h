@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, assign) double textSize;
 
+@property(nonatomic, copy) NSString *textAlignmentStr;
+
 @end
 
 NS_ASSUME_NONNULL_END

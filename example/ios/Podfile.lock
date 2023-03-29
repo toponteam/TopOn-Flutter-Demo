@@ -1,0 +1,91 @@
+PODS:
+  - Ads-CN (5.1.0.5):
+    - Ads-CN/BUAdSDK (= 5.1.0.5)
+  - Ads-CN/BUAdSDK (5.1.0.5):
+    - Ads-CN/Dep_Accurate
+  - Ads-CN/Dep_Accurate (5.1.0.5):
+    - BUAdSDK (= 0.2.0.1)
+    - BURelyFoundation/CSJ (= 0.1.0.7)
+  - anythink_sdk (0.0.1):
+    - AnyThinkiOS (= 6.1.71)
+    - AnyThinkiOS/AnyThinkTTAdapter (= 6.1.71)
+    - Flutter
+    - Masonry
+  - AnyThinkiOS (6.1.71):
+    - AnyThinkiOS/AnyThinkSDK (= 6.1.71)
+  - AnyThinkiOS/AnyThinkSDK (6.1.71)
+  - AnyThinkiOS/AnyThinkTTAdapter (6.1.71):
+    - Ads-CN (= 5.1.0.5)
+    - AnyThinkiOS/AnyThinkSDK
+  - BUAdSDK (0.2.0.1):
+    - BUAdSDK/BUAdSDK (= 0.2.0.1)
+  - BUAdSDK/BUAdSDK (0.2.0.1)
+  - BURelyFoundation/AFNetworking (0.1.0.7)
+  - BURelyFoundation/BURelyFoundation (0.1.0.7)
+  - BURelyFoundation/CSJ (0.1.0.7):
+    - BURelyFoundation/AFNetworking
+    - BURelyFoundation/BURelyFoundation
+    - BURelyFoundation/CSJLottie
+    - BURelyFoundation/Foundation
+    - BURelyFoundation/Gecko
+    - BURelyFoundation/HM
+    - BURelyFoundation/NETWork
+    - BURelyFoundation/SDWebImage
+    - BURelyFoundation/Ugen
+    - BURelyFoundation/YYModel
+    - BURelyFoundation/ZFPlayer
+    - BURelyFoundation/Zip
+  - BURelyFoundation/CSJLottie (0.1.0.7)
+  - BURelyFoundation/ELCoreTokenizer (0.1.0.7)
+  - BURelyFoundation/Foundation (0.1.0.7):
+    - BURelyFoundation/NETWork
+  - BURelyFoundation/Gecko (0.1.0.7):
+    - BURelyFoundation/Foundation
+  - BURelyFoundation/HM (0.1.0.7)
+  - BURelyFoundation/NETWork (0.1.0.7):
+    - BURelyFoundation/AFNetworking
+  - BURelyFoundation/SDWebImage (0.1.0.7):
+    - BURelyFoundation/Foundation
+    - BURelyFoundation/ServiceCenter
+  - BURelyFoundation/ServiceCenter (0.1.0.7)
+  - BURelyFoundation/Ugen (0.1.0.7):
+    - BURelyFoundation/ELCoreTokenizer
+  - BURelyFoundation/YYModel (0.1.0.7)
+  - BURelyFoundation/ZFPlayer (0.1.0.7):
+    - BURelyFoundation/Foundation
+    - BURelyFoundation/Zip
+  - BURelyFoundation/Zip (0.1.0.7):
+    - BURelyFoundation/Foundation
+  - Flutter (1.0.0)
+  - Masonry (1.1.0)
+
+DEPENDENCIES:
+  - anythink_sdk (from `.symlinks/plugins/anythink_sdk/ios`)
+  - Flutter (from `Flutter`)
+
+SPEC REPOS:
+  trunk:
+    - Ads-CN
+    - AnyThinkiOS
+    - BUAdSDK
+    - BURelyFoundation
+    - Masonry
+
+EXTERNAL SOURCES:
+  anythink_sdk:
+    :path: ".symlinks/plugins/anythink_sdk/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  Ads-CN: 342fba3a46d17fa395da7bba1d88893fe33905e6
+  anythink_sdk: ee756c2e117a56bb02213d64e4c4d9fe2f3130f8
+  AnyThinkiOS: 4a26893daa603e34384015a280b51cb0a524fef6
+  BUAdSDK: 002b735289815f703efc9108f66347ac61f1892a
+  BURelyFoundation: 0de7dbb9acc7f69a0a56b09949260f5dc5a4e0ab
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+
+PODFILE CHECKSUM: 019a2cbc867b03dc567446163df28793c29a1336
+
+COCOAPODS: 1.11.3

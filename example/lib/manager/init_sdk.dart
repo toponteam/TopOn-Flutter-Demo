@@ -99,13 +99,9 @@ class InitTool{
 
 
   initTopon() async {
-    await ATInitManger
-        .initAnyThinkSDK(
+    await ATInitManger.initAnyThinkSDK(
         appidStr: Configuration.appidStr,
-        appidkeyStr: Configuration.appidkeyStr)
-        .then((value) {
-      print('flutter: End of initialization');
-    });
+        appidkeyStr: Configuration.appidkeyStr);
   }
 
   showGDPRAuth()async{

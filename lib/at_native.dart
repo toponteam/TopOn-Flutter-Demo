@@ -59,6 +59,7 @@ class ATNative {
       double y = 0,
       String backgroundColorStr = '#FFFFFF',
       String textColorStr = '#000000',
+      String textAlignmentStr = 'left',
       double textSize = 15,
       bool isCustomClick = false}) {
     return {
@@ -69,6 +70,7 @@ class ATNative {
       'backgroundColorStr': backgroundColorStr,
       'textColorStr': textColorStr,
       'textSize': textSize,
+      'textAlignmentStr':textAlignmentStr,
       'isCustomClick': isCustomClick,
     };
   }

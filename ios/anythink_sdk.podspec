@@ -19,7 +19,7 @@ A new Flutter project.
   s.dependency 'Flutter'
   s.platform = :ios, '10.0'
   
-  #*************************手动导入******************************#
+  #************************* Manual import ******************************#
 # s.frameworks = 'SystemConfiguration', 'CoreGraphics','Foundation','UIKit','AVFoundation','AdSupport','AudioToolbox','CoreMedia','StoreKit','SystemConfiguration','WebKit','AppTrackingTransparency','CoreMotion','CoreTelephony','MessageUI','SafariServices','WebKit','CoreMotion','JavaScriptCore','CoreLocation','MediaPlayer'
 #
 #  s.pod_target_xcconfig =   {'OTHER_LDFLAGS' => ['-lObjC']}
@@ -37,38 +37,37 @@ A new Flutter project.
 
   #*************************************************************#
 
-  #************************自动导入**********************************#
-#   s.dependency 'GDTMobSDK','4.14.12'
-#   s.dependency 'Ads-CN','5.0.0.2'
+  #************************ CocoaPod **********************************#
    
-   s.dependency 'AnyThinkiOS','6.1.51'
-#   s.dependency 'AnyThinkiOS/AnyThinkAdmobAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkTTAdapter','6.1.51'
-#    s.dependency 'AnyThinkiOS/AnyThinkPangleAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkFacebookAdapter','5.9.80'
-   s.dependency 'AnyThinkiOS/AnyThinkGDTAdapter','6.1.51'
-   s.dependency 'Masonry'
-#   s.dependency 'AnyThinkiOS/AnyThinkMintegralAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkApplovinAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkTapjoyAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkChartboostAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkUnityAdsAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkVungleAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkInmobiAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkIronSourceAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkMaioAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkNendAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkSigmobAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkStartAppAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkKidozAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkFyberAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkMyTargetAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkKSAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkBaiduAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkOguryAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkMopubAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkAdColonyAdapter','5.9.80'
-#   s.dependency 'AnyThinkiOS/AnyThinkKlevinAdapter','5.9.80'
+#   s.dependency 'AnyThinkiOS','6.1.71'
+#   s.dependency 'Masonry'
+#   s.dependency 'AnyThinkiOS/AnyThinkAdmobAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkTTAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkPangleAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkFacebookAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkGDTAdapter','6.1.71'
+   
+#   s.dependency 'AnyThinkiOS/AnyThinkMintegralAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkApplovinAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkTapjoyAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkChartboostAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkUnityAdsAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkVungleAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkInmobiAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkIronSourceAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkMaioAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkNendAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkSigmobAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkStartAppAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkKidozAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkFyberAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkMyTargetAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkKuaiShouAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkBaiduAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkOguryAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkMopubAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkAdColonyAdapter','6.1.71'
+#   s.dependency 'AnyThinkiOS/AnyThinkKlevinAdapter','6.1.71'
 
 #*************************************************************#
 

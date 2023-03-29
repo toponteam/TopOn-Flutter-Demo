@@ -15,9 +15,7 @@ class NativeTool {
             340,
           ),
           ATNativeManager.isAdaptiveHeight(): true
-        }).then((value) {
-      print('flutter Native ad loading ends');
-    });
+        });
   }
 
   nativeAdReady() async {
@@ -165,9 +163,7 @@ class NativeTool {
             x: 20,
             y: 0,
           ),
-        }).then((value) {
-      print('flutter showSceneNativeAd: $value');
-    });
+        });
   }
 
 
@@ -229,16 +225,12 @@ class NativeTool {
             x: topSizeTool.getWidth() - 30,
             y: 10,
           ),
-        }, isAdaptiveHeight: true).then((value) {
-      print('flutter showNativeAd$value');
-    });
+        }, isAdaptiveHeight: true);
   }
 
   removeNativeAd() async {
     await ATNativeManager.removeNativeAd(
         placementID: Configuration.nativePlacementID
-    ).then((value) {
-      print('flutter removeNativeAd: $value');
-    });
+    );
   }
 }

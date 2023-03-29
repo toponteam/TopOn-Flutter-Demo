@@ -88,7 +88,7 @@
 #pragma mark - private
 // 初始化SDK
 - (void)starToponSDK:(FlutterMethodCall *)call result:(FlutterResult)result{
-
+    
     [ATFInitManger initAnyThinkSDKAppID:ATFCoconfigurMode.appIdStr appKeyStr:ATFCoconfigurMode.appKeyStr requestError:^(NSError * resultError) {
         
         if (resultError == nil) {

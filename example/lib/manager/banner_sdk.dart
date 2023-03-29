@@ -14,15 +14,12 @@ class BannerTool {
               TopSize().getWidth(), TopSize().getWidth() * (50 / 320)),
           ATBannerManager.getAdaptiveWidthKey(): TopSize().getWidth(),
           ATBannerManager.getAdaptiveOrientationKey(): ATBannerManager.adaptiveOrientationCurrent(),
-        }).then((value) {
-      print('flutter End of banner loading');
-    });
+        });
   }
 
   bannerAdReady() async {
     await ATBannerManager.bannerAdReady(
         placementID: Configuration.bannerPlacementID,
-
     ).then((value) {
       print('flutter bannerAdReady: $value');
     });
@@ -53,9 +50,7 @@ class BannerTool {
         extraMap: {
           ATCommon.getAdSizeKey():
           ATBannerManager.createLoadBannerAdSize(400, 500, x: 0, y: 200),
-        }).then((value) {
-      print('flutter showBannerInRectangle: $value');
-    });
+        });
   }
 
   showSceneBannerInRectangle() async {
@@ -65,50 +60,36 @@ class BannerTool {
         extraMap: {
           ATCommon.getAdSizeKey():
           ATBannerManager.createLoadBannerAdSize(400, 500, x: 0, y: 200),
-        }).then((value) {
-      print('flutter showSceneBannerInRectangle: $value');
-    });
+        });
   }
 
   showAdInPosition() async {
     await ATBannerManager.showAdInPosition(
         placementID: Configuration.bannerPlacementID,
-        position: ATCommon.getAdATBannerAdShowingPositionBottom())
-        .then((value) {
-      print('flutter showAdInPosition: $value');
-    });
+        position: ATCommon.getAdATBannerAdShowingPositionBottom());
   }
   showSceneBannerAdInPosition() async {
     await ATBannerManager.showSceneBannerAdInPosition(
         placementID: Configuration.bannerPlacementID,
         sceneID: Configuration.bannerSceneID,
-        position: ATCommon.getAdATBannerAdShowingPositionBottom())
-        .then((value) {
-      print('flutter showSceneBannerAdInPosition: $value');
-    });
+        position: ATCommon.getAdATBannerAdShowingPositionBottom());
   }
   removeBannerAd() async {
     await ATBannerManager.removeBannerAd(
       placementID: Configuration.bannerPlacementID,
-    ).then((value) {
-      print('flutter removeBannerAd: $value');
-    });
+    );
   }
 
   hideBannerAd() async {
     await ATBannerManager.hideBannerAd(
       placementID: Configuration.bannerPlacementID,
-    ).then((value) {
-      print('flutter hideBannerAd: $value');
-    });
+    );
   }
 
   afreshShowBannerAd() async {
     await ATBannerManager.afreshShowBannerAd(
       placementID: Configuration.bannerPlacementID,
-    ).then((value) {
-      print('flutter afreshShowBannerAd: $value');
-    });
+    );
   }
 
   readyStatus() async {

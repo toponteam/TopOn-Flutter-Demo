@@ -73,7 +73,8 @@ class _NativeRouterState extends State<NativeRouter> {
           y: 40,
           textSize: 15,
           textColorStr: "#FFFFFF",
-          backgroundColorStr: "#2095F1"
+          backgroundColorStr: "#2095F1",
+          textAlignmentStr: "center",
         ),
         ATNativeManager.mainImage(): ATNativeManager.createNativeSubViewAttribute(
             topSizeTool.getWidth() - 20, topSizeTool.getWidth() * 0.6,
@@ -134,8 +135,8 @@ class _NativeRouterState extends State<NativeRouter> {
                           ))),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.white70),
-                      onPressed: NativeManager.removeNativeAd,
-                      // onPressed: _remove,
+                      // onPressed: NativeManager.removeNativeAd,
+                      onPressed: _remove,
                       child: Text("Remove",
                           style: TextStyle(
                             color: Colors.black,

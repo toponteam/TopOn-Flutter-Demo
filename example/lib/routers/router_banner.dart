@@ -36,7 +36,6 @@ class _BannerRouterState extends State<BannerRouter> {
       } else {
         print('flutter banner no cache');
       }
-
     });
   }
   _remove() {
@@ -96,8 +95,8 @@ class _BannerRouterState extends State<BannerRouter> {
                           ))),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.white70),
-                      onPressed: BannerManager.removeBannerAd,
-                      // onPressed: _remove,
+                      // onPressed: BannerManager.removeBannerAd,
+                      onPressed: _remove,
                       child: Text("Remove",
                           style: TextStyle(
 

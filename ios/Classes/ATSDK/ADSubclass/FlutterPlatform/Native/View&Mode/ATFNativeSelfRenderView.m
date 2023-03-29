@@ -86,16 +86,31 @@
     _titleLabel.font = [UIFont boldSystemFontOfSize:self.mainTitleMode.textSize];
     _titleLabel.textColor = [ATFCommonTool colorWithHexString:self.mainTitleMode.textColorStr];
     _titleLabel.backgroundColor =  [ATFCommonTool colorWithHexString:self.mainTitleMode.backgroundColorStr];
+    _titleLabel.textAlignment = [self setLabelTextAlignment:self.mainTitleMode.textAlignmentStr];
     
     _textLabel.font = [UIFont systemFontOfSize:self.descMode.textSize];
     _textLabel.textColor = [ATFCommonTool colorWithHexString:self.descMode.textColorStr];
     _textLabel.backgroundColor =  [ATFCommonTool colorWithHexString:self.descMode.backgroundColorStr];
-
+    _textLabel.textAlignment = [self setLabelTextAlignment:self.descMode.textAlignmentStr];
 
     
     _ctaLabel.font = [UIFont systemFontOfSize:self.ctaMode.textSize];
     _ctaLabel.textColor = [ATFCommonTool colorWithHexString:self.ctaMode.textColorStr];
     _ctaLabel.backgroundColor =  [ATFCommonTool colorWithHexString:self.ctaMode.backgroundColorStr];
+    _ctaLabel.textAlignment = [self setLabelTextAlignment:self.ctaMode.textAlignmentStr];
+}
+
+- (NSTextAlignment)setLabelTextAlignment:(NSString *)textAlignmentStr {
+
+    if ([textAlignmentStr isEqualToString:@"left"]) {
+        return NSTextAlignmentLeft;
+    } else if ([textAlignmentStr isEqualToString:@"center"]) {
+        return NSTextAlignmentCenter;
+    } else if ([textAlignmentStr isEqualToString:@"right"]) {
+        return NSTextAlignmentRight;
+    } else {
+        return NSTextAlignmentLeft;
+    }
 }
 
 - (void)setViewLayout{
@@ -191,35 +206,41 @@
 
 - (void)setupUI{
     
-    [[ATImageLoader shareLoader]loadImageWithURL:[NSURL URLWithString:self.nativeAdOffer.nativeAd.iconUrl] completion:^(UIImage *image, NSError *error) {
-            
-        if (!error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.iconImageView setImage:image];
-            });
-            
-      
-        }
-    }];
+    if (self.nativeAdOffer.nativeAd.icon) {
+        self.iconImageView.image = self.nativeAdOffer.nativeAd.icon;
+    } else {
+        [[ATImageLoader shareLoader]loadImageWithURL:[NSURL URLWithString:self.nativeAdOffer.nativeAd.iconUrl] completion:^(UIImage *image, NSError *error) {
+            if (!error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.iconImageView setImage:image];
+                });
+            }
+        }];
+    }
     
-    [[ATImageLoader shareLoader]loadImageWithURL:[NSURL URLWithString:self.nativeAdOffer.nativeAd.imageUrl] completion:^(UIImage *image, NSError *error) {
-            
-        if (!error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.mainImageView setImage:image];
-            });
-
-        }
-    }];
+    if (self.nativeAdOffer.nativeAd.mainImage) {
+        self.mainImageView.image = self.nativeAdOffer.nativeAd.mainImage;
+    } else {
+        [[ATImageLoader shareLoader]loadImageWithURL:[NSURL URLWithString:self.nativeAdOffer.nativeAd.imageUrl] completion:^(UIImage *image, NSError *error) {
+            if (!error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.mainImageView setImage:image];
+                });
+            }
+        }];
+    }
     
-    [[ATImageLoader shareLoader]loadImageWithURL:[NSURL URLWithString:self.nativeAdOffer.nativeAd.logoUrl] completion:^(UIImage *image, NSError *error) {
-            
-        if (!error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.logoImageView setImage:image];
-            });
-        }
-    }];
+    if (self.nativeAdOffer.nativeAd.logo) {
+        self.logoImageView.image = self.nativeAdOffer.nativeAd.logo;
+    } else {
+        [[ATImageLoader shareLoader]loadImageWithURL:[NSURL URLWithString:self.nativeAdOffer.nativeAd.logoUrl] completion:^(UIImage *image, NSError *error) {
+            if (!error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.logoImageView setImage:image];
+                });
+            }
+        }];
+    }
     
     self.advertiserLabel.text = self.nativeAdOffer.nativeAd.advertiser;
 
