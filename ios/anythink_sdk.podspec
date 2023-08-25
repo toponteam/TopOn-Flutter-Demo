@@ -18,19 +18,20 @@ A new Flutter project.
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.platform = :ios, '10.0'
+  s.static_framework = true
   
   #************************* Manual import ******************************#
-s.frameworks = 'SystemConfiguration', 'CoreGraphics','Foundation','UIKit','AVFoundation','AdSupport','AudioToolbox','CoreMedia','StoreKit','SystemConfiguration','WebKit','AppTrackingTransparency','CoreMotion','CoreTelephony','MessageUI','SafariServices','WebKit','CoreMotion','JavaScriptCore','CoreLocation','MediaPlayer'
+# s.frameworks = 'SystemConfiguration', 'CoreGraphics','Foundation','UIKit','AVFoundation','AdSupport','AudioToolbox','CoreMedia','StoreKit','SystemConfiguration','WebKit','AppTrackingTransparency','CoreMotion','CoreTelephony','MessageUI','SafariServices','WebKit','CoreMotion','JavaScriptCore','CoreLocation','MediaPlayer'
 
- s.pod_target_xcconfig =   {'OTHER_LDFLAGS' => ['-lObjC']}
+#  s.pod_target_xcconfig =   {'OTHER_LDFLAGS' => ['-lObjC']}
 
- s.libraries = 'c++', 'z', 'sqlite3', 'xml2', 'resolv', 'bz2.1.0','bz2','xml2','resolv.9','iconv','c++abi'
+#  s.libraries = 'c++', 'z', 'sqlite3', 'xml2', 'resolv', 'bz2.1.0','bz2','xml2','resolv.9','iconv','c++abi'
 
- s.vendored_frameworks = '{ThirdPartySDK/tt/*.xcframework,ThirdPartySDK/tt/*.framework,ThirdPartySDK/Core/*.xcframework,ThirdPartySDK/gdt/*.xcframework,ThirdPartySDK/Masonry.framework}'
+#  s.vendored_frameworks = '{ThirdPartySDK/tt/*.xcframework,ThirdPartySDK/tt/*.framework,ThirdPartySDK/Core/*.xcframework,ThirdPartySDK/gdt/*.xcframework,ThirdPartySDK/Masonry.framework}'
 
- s.resource = 'ThirdPartySDK/**/*.bundle'
+#  s.resource = 'ThirdPartySDK/**/*.bundle'
 
- s.vendored_library = 'ThirdPartySDK/**/*.a'
+#  s.vendored_library = 'ThirdPartySDK/**/*.a'
 
 
 
@@ -39,35 +40,35 @@ s.frameworks = 'SystemConfiguration', 'CoreGraphics','Foundation','UIKit','AVFou
 
   #************************ CocoaPod **********************************#
    
-  # s.dependency 'AnyThinkiOS','6.2.16'
-  # s.dependency 'Masonry'
-  # s.dependency 'AnyThinkiOS/AnyThinkAdmobAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkTTAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkPangleAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkFacebookAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkGDTAdapter','6.2.16'
+  s.dependency 'AnyThinkiOS','6.2.36'
+  s.dependency 'Masonry'
+  # s.dependency 'AnyThinkiOS/AnyThinkAdmobAdapter','6.2.36'
+  s.dependency 'AnyThinkiOS/AnyThinkTTAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkPangleAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkFacebookAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkGDTAdapter','6.2.36'
    
-#   s.dependency 'AnyThinkiOS/AnyThinkMintegralAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkApplovinAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkTapjoyAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkChartboostAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkUnityAdsAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkVungleAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkInmobiAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkIronSourceAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkMaioAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkNendAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkSigmobAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkStartAppAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkKidozAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkFyberAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkMyTargetAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkKuaiShouAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkBaiduAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkOguryAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkMopubAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkAdColonyAdapter','6.2.16'
-#   s.dependency 'AnyThinkiOS/AnyThinkKlevinAdapter','6.2.16'
+#   s.dependency 'AnyThinkiOS/AnyThinkMintegralAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkApplovinAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkTapjoyAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkChartboostAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkUnityAdsAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkVungleAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkInmobiAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkIronSourceAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkMaioAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkNendAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkSigmobAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkStartAppAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkKidozAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkFyberAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkMyTargetAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkKuaiShouAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkBaiduAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkOguryAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkMopubAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkAdColonyAdapter','6.2.36'
+#   s.dependency 'AnyThinkiOS/AnyThinkKlevinAdapter','6.2.36'
 
 #*************************************************************#
 
