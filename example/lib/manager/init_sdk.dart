@@ -12,30 +12,21 @@ class InitTool{
     await ATInitManger
         .setLogEnabled(
       logEnabled: true,
-    )
-        .then((value) {
-      print('Set log switch $value');
-    });
+    );
   }
 
   setChannelStr() async {
     await ATInitManger
         .setChannelStr(
       channelStr: "test_setChannel",
-    )
-        .then((value) {
-      print('Set up channels $value');
-    });
+    );
   }
 
   setSubchannelStr() async {
     await ATInitManger
         .setSubChannelStr(
       subchannelStr: "test_setSubchannelStr",
-    )
-        .then((value) {
-      print('Set up sub-channels');
-    });
+    );
   }
 
   setCustomDataDic() async {
@@ -43,26 +34,20 @@ class InitTool{
       customDataMap: {
         'setCustomDataDic': 'myCustomDataDic',
       },
-    ).then((value) {
-      print('Set up custom rules');
-    });
+    );
   }
 
   setExludeBundleIDArray() async {
     await ATInitManger.setExludeBundleIDArray(
       exludeBundleIDList: ['test_setExludeBundleIDArray'],
-    ).then((value) {
-      print('Set up exclusion of cross-promotion');
-    });
+    );
   }
 
   setPlacementCustomData() async {
     await ATInitManger.setPlacementCustomData(
       placementIDStr: 'b5b72b21184aa8',
       placementCustomDataMap: {'setPlacementCustomData': 'test_setPlacementCustomData'},
-    ).then((value) {
-      print('Set pl rules');
-    });
+    );
   }
 
   getUserLocation() async {
@@ -80,19 +65,14 @@ class InitTool{
 
     await ATInitManger.setDataConsentSet(
         gdprLevel:
-    ATInitManger.dataConsentSetPersonalized()).then((value) {
-      print('flutter: Set up GDPR${value.toString()}');
-    });
+    ATInitManger.dataConsentSetPersonalized());
   }
 
   deniedUploadDeviceInfo() async {
 
     await ATInitManger
         .deniedUploadDeviceInfo(
-        deniedUploadDeviceInfoList: [ATInitManger.aOAID()])
-        .then((value) {
-      print('flutter: End of initialization');
-    });
+        deniedUploadDeviceInfoList: [ATInitManger.aOAID()]);
   }
 
 
